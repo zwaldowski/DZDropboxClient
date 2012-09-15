@@ -1,6 +1,6 @@
 //
 //  DZDropboxAccountInfo.m
-//  Markable
+//  DZDropboxClient
 //
 //  Created by Zachary Waldowski on 3/28/12.
 //  Copyright (c) 2012 Dizzy Technology. All rights reserved.

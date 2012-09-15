@@ -1,6 +1,6 @@
 //
 //  DZOAuth1Client.h
-//  Markable
+//  DZDropboxClient
 //
 //  Created by Zachary Waldowski on 3/12/12.
 //  Copyright (c) 2012 Dizzy Technology. All rights reserved.
