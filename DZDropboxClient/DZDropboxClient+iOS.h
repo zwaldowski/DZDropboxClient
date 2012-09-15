@@ -15,6 +15,9 @@
 + (BOOL)handleOpenURL:(NSURL *)URL cancelled:(void(^)(void))block;
 - (BOOL)handleOpenURL:(NSURL *)URL cancelled:(void(^)(void))block;
 
+- (NSURL *)URLToLink;
+- (NSURL *)URLToLinkUserID:(NSString *)userID;
+
 - (void)link;
 - (void)linkUserID:(NSString *)userID;
 - (void)unlink;

@@ -45,12 +45,6 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 
 @end
 
-@interface DZDropboxClient (OSXPrivate)
-
-@property (nonatomic, getter = isAuthenticating, readonly) BOOL authenticating;
-
-@end
-
 #pragma mark -
 
 @implementation DZDropboxClient (OSX)
@@ -118,7 +112,8 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 		NSString *osxProtocol= [NSString stringWithFormat:@"db-%@", [[self class] consumerKey]];
 		NSString *urlStr = [NSString stringWithFormat:@"https://%@/%@/oauth/authorize?oauth_token=%@&osx_protocol=%@", DZDropboxWebHost, DZDropboxAPIVersion, requestToken, osxProtocol];
 		NSURL *url = [NSURL URLWithString:urlStr];
-		
+
+#TODO - do this in-app using WebView
 		[[NSWorkspace sharedWorkspace] openURL:url];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		self.authenticating = NO;

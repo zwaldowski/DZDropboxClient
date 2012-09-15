@@ -75,7 +75,6 @@
 		6CCFCEA516051B5B003B87AB /* DZDropboxClient+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+iOS.m"; sourceTree = "<group>"; };
 		6CCFCEA616051B5B003B87AB /* DZDropboxClient+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient+OSX.h"; sourceTree = "<group>"; };
 		6CCFCEA716051B5B003B87AB /* DZDropboxClient+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+OSX.m"; sourceTree = "<group>"; };
-		6CCFCEA816051B5B003B87AB /* DZDropboxClient-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient-Prefix.pch"; sourceTree = "<group>"; };
 		6CCFCEA916051B5B003B87AB /* DZDropboxClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxClient.h; sourceTree = "<group>"; };
 		6CCFCEAA16051B5B003B87AB /* DZDropboxClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxClient.m; sourceTree = "<group>"; };
 		6CCFCEAB16051B5B003B87AB /* DZDropboxDeltaEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxDeltaEntry.h; sourceTree = "<group>"; };
@@ -105,9 +104,8 @@
 		6CCFCDFF16051B34003B87AB = {
 			isa = PBXGroup;
 			children = (
-				6CCFCEBC16051C28003B87AB /* Security.framework */,
-				6CCFCE9F16051B5B003B87AB /* DZDropboxClient */,
 				6CCFCE3216051B54003B87AB /* AFNetworking */,
+				6CCFCE9F16051B5B003B87AB /* DZDropboxClient */,
 				6CCFCE1416051B34003B87AB /* DZDropboxTableSample */,
 				6CCFCE0D16051B34003B87AB /* Frameworks */,
 				6CCFCE0B16051B34003B87AB /* Products */,
@@ -125,6 +123,7 @@
 		6CCFCE0D16051B34003B87AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6CCFCEBC16051C28003B87AB /* Security.framework */,
 				6CCFCE0E16051B34003B87AB /* Cocoa.framework */,
 				6CCFCE1016051B34003B87AB /* Other Frameworks */,
 			);
@@ -202,7 +201,6 @@
 				6CCFCEA516051B5B003B87AB /* DZDropboxClient+iOS.m */,
 				6CCFCEA616051B5B003B87AB /* DZDropboxClient+OSX.h */,
 				6CCFCEA716051B5B003B87AB /* DZDropboxClient+OSX.m */,
-				6CCFCEA816051B5B003B87AB /* DZDropboxClient-Prefix.pch */,
 				6CCFCEA916051B5B003B87AB /* DZDropboxClient.h */,
 				6CCFCEAA16051B5B003B87AB /* DZDropboxClient.m */,
 				6CCFCEAB16051B5B003B87AB /* DZDropboxDeltaEntry.h */,

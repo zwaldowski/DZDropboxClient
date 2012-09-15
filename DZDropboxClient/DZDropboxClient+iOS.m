@@ -72,12 +72,12 @@ static DZDropboxClient *outgoingClient = nil;
     [self dz_setUserID: userID];
 }
 
-- (void)link {
-	[self linkUserID:self.userID];
+- (NSURL *)URLToLink {
+	return [self URLToLinkUserID: self.userID];
 }
 
-- (void)linkUserID:(NSString *)userID {
-    NSString *appScheme = [NSString stringWithFormat:@"db-%@", [[self class] consumerKey]];
+- (NSURL *)URLToLinkUserID:(NSString *)userID {
+	NSString *appScheme = [NSString stringWithFormat:@"db-%@", [[self class] consumerKey]];
     NSArray *urlTypes = [[NSBundle mainBundle] infoDictionary][@"CFBundleURLTypes"];
 	BOOL conformsToScheme = ([urlTypes indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		NSArray *schemes = obj[@"CFBundleURLSchemes"];
@@ -90,7 +90,7 @@ static DZDropboxClient *outgoingClient = nil;
 		}] != NSNotFound);
 	}] != NSNotFound);
 	NSAssert(conformsToScheme, @"App does not conform to consumer key URL protocol!");
-	
+
 	NSString *userIdStr = [userID isEqual:DZDropboxUnknownUserID] ? @"" : [NSString stringWithFormat:@"&u=%@", userID];
 	NSString *consumerKey = [[self class] consumerKey];
 	NSData *consumerSecret = [[[self class] consumerSecret] dataUsingEncoding:NSUTF8StringEncoding];
@@ -99,11 +99,21 @@ static DZDropboxClient *outgoingClient = nil;
 	CC_SHA1(consumerSecret.bytes, consumerSecret.length, md);
 	NSUInteger sha_32 = htonl(((NSUInteger *)md)[CC_SHA1_DIGEST_LENGTH/sizeof(NSUInteger) - 1]);
 	NSString *secret = [NSString stringWithFormat:@"%x", sha_32];
-	
+
 	NSURL *dbURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/connect", DZDropboxProtocol, DZDropboxAPIVersion]];
 	NSString *urlStr = [[UIApplication sharedApplication] canOpenURL:dbURL] ? [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr] : [NSString stringWithFormat:@"https://%@/%@/connect?k=%@&s=%@&dca=1&%@", DZDropboxWebHost, DZDropboxAPIVersion, consumerKey, secret, userIdStr];
+
+	return [NSURL URLWithString:urlStr];
+}
+
+- (void)link {
+	[self linkUserID:self.userID];
+}
+
+- (void)linkUserID:(NSString *)userID {
+	NSURL *outgoingURL = [self URLToLinkUserID: userID];
 	outgoingClient = self;
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
+	[[UIApplication sharedApplication] openURL: outgoingURL];
 }
 
 - (void)unlink {
