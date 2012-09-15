@@ -163,7 +163,7 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 	NSMutableDictionary *headers = [self.OAuthValues mutableCopy];
 	
     // Generate timestamp
-	headers[DZOAuthHeaderTimestampKey] = [NSString stringWithFormat:@"%ld", (NSUInteger)[[NSDate date] timeIntervalSince1970]];
+	headers[DZOAuthHeaderTimestampKey] = [NSString stringWithFormat:@"%d", (NSUInteger)[[NSDate date] timeIntervalSince1970]];
 	
 	// Generate nonce
 	CFUUIDRef UUID = CFUUIDCreate(NULL);
