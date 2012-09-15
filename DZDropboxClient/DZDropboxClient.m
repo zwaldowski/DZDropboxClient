@@ -13,11 +13,6 @@
 #import "DZDropboxDeltaEntry.h"
 #import "DZOAuth1Credential.h"
 
-static NSString *const DZDropboxClientRootName[] = {
-    @"dropbox",
-    @"sandbox",
-};
-
 NSString *DZDropboxAPIHost = @"api.dropbox.com";
 NSString *DZDropboxAPIContentHost = @"api-content.dropbox.com";
 NSString *DZDropboxAPIVersion = @"1";
@@ -25,6 +20,15 @@ NSString *DZDropboxWebHost = @"www.dropbox.com";
 NSString *DZDropboxProtocol = @"dbapi-1";
 NSString *DZDropboxSavedCredentialsKey = @"DZDropboxDropboxSavedCredentials";
 NSString *DZDropboxUnknownUserID = @"unknown";
+
+static inline NSString *NSStringFromClientRoot(DZDropboxClientRoot root){
+	NSString *value = nil;
+	switch (root) {
+		case DZDropboxClientRootDropbox:	value = @"dropbox"; break;
+		case DZDropboxClientRootAppFolder:	value = @"sandbox"; break;
+	}
+	return value;
+}
 
 static inline NSString *NSStringFromThumbnailSize(DZDropboxThumbnailSize size){
 	NSString *value = nil;
@@ -611,7 +615,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 }
 
 + (NSString *)dz_root {
-    return DZDropboxClientRootName[[self clientRoot]];
+	return NSStringFromClientRoot([[self class] clientRoot]);
 }
 
 + (NSArray *)linkedUserIDs {

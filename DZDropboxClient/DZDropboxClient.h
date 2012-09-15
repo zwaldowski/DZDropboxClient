@@ -16,16 +16,16 @@ typedef void(^DBResultsBlock)(NSArray *);
 typedef void(^DBProgressBlock)(CGFloat);
 typedef void(^DBErrorBlock)(NSError *);
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, DZDropboxThumbnailSize) {
 	DZDropboxThumbnailSizeSmall,
 	DZDropboxThumbnailSizeMedium,
 	DZDropboxThumbnailSizeLarge
-} DZDropboxThumbnailSize;
+};
 
-typedef enum {
-    DZDropboxClientRootDropbox = 0,
-    DZDropboxClientRootAppFolder = 1
-} DZDropboxClientRoot;
+typedef NS_ENUM(NSUInteger, DZDropboxClientRoot) {
+	DZDropboxClientRootDropbox,
+	DZDropboxClientRootAppFolder
+};
 
 @interface DZDropboxClient : DZOAuth1Client <NSCoding> {
 @package
