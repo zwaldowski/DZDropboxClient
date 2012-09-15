@@ -36,31 +36,6 @@ static inline NSString *NSStringFromThumbnailSize(DZDropboxThumbnailSize size){
 	return value;
 }
 
-static NSString *DZDropboxUserAgent(void) {
-	static dispatch_once_t onceToken;
-	static NSString *userAgent = nil;
-	dispatch_once(&onceToken, ^{
-		NSBundle *bundle = [NSBundle mainBundle];
-        NSString *appName = [[bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"] stringByReplacingOccurrencesOfString:@" " withString:@""];
-        NSString *appVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        userAgent = [[NSString alloc] initWithFormat:@"%@/%@", appName, appVersion];
-	});
-	return userAgent;
-}
-
-static NSString *DZDropboxBestLanguage(void) {
-	static dispatch_once_t onceToken;
-	static NSString *preferredLang = nil;
-	dispatch_once(&onceToken, ^{
-		NSString *lang = [[NSLocale preferredLanguages] objectAtIndex:0];
-        if ([[[NSBundle mainBundle] localizations] containsObject:lang])
-            preferredLang = [lang copy];
-        else
-            preferredLang = @"en";
-	});
-    return preferredLang;
-}
-
 extern NSDictionary * DZParametersFromURLQuery(NSURL *URL);
 
 NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
@@ -98,8 +73,8 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 #pragma mark Init
 
 - (id)initWithUserID:(NSString *)userID {
-	NSString *URLString = [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIHost, DZDropboxAPIVersion];
-    NSString *contentURLString = [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIContentHost, DZDropboxAPIVersion];
+	NSURL *baseURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIHost, DZDropboxAPIVersion]];
+    NSURL *contentURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIContentHost, DZDropboxAPIVersion]];
     DZOAuth1Credential *credential = nil;
     
     if (userID.length && ![userID isEqualToString: DZDropboxUnknownUserID]) {
@@ -109,12 +84,28 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
             credential = [NSKeyedUnarchiver unarchiveObjectWithData: credentialData];
     }
     
-    if ((self = [super initWithBaseURL: [NSURL URLWithString:URLString] credential: credential])) {
+    if ((self = [super initWithBaseURL: baseURL credential: credential])) {
 		_userID = userID.length ? [userID copy] : DZDropboxUnknownUserID;
-		_contentBaseURL = [NSURL URLWithString:contentURLString];
-		
-		[self setDefaultHeader:@"User-Agent" value:DZDropboxUserAgent()];
-		[self setDefaultHeader:@"Locale" value:DZDropboxBestLanguage()];
+		_contentBaseURL = contentURL;
+
+		static dispatch_once_t onceToken;
+		static NSString *userAgent = nil;
+		static NSString *preferredLang = nil;
+		dispatch_once(&onceToken, ^{
+			NSBundle *bundle = [NSBundle mainBundle];
+			NSString *appName = [[bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"] stringByReplacingOccurrencesOfString:@" " withString:@""];
+			NSString *appVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+			userAgent = [[NSString alloc] initWithFormat:@"%@/%@", appName, appVersion];
+
+			NSString *lang = [[NSLocale preferredLanguages] objectAtIndex:0];
+			if ([[[NSBundle mainBundle] localizations] containsObject:lang])
+				preferredLang = [lang copy];
+			else
+				preferredLang = @"en";
+		});
+
+		[self setDefaultHeader:@"User-Agent" value: userAgent];
+		[self setDefaultHeader:@"Locale" value: preferredLang];
 		
 		[self registerHTTPOperationClass:[AFJSONRequestOperation class]];
         
