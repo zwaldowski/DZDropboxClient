@@ -60,6 +60,10 @@
     return self;
 }
 
++ (instancetype)metadataWithDictionary:(NSDictionary *)dict {
+	return [[self alloc] initWithDictionary: dict];
+}
+
 - (BOOL)isEqual:(id)object {
 	if (![object isKindOfClass:[DZDropboxMetadata class]])
 		return NO;

@@ -11,13 +11,22 @@
 
 @implementation DZDropboxDeltaEntry
 
-- (instancetype)initWithArray:(NSArray *)array {
+- (instancetype)initWithContents:(id)contents {
     if ((self = [super init])) {
-        _path = array[0];
-        if (array[1] != [NSNull null])
-            _metadata = [[DZDropboxMetadata alloc] initWithDictionary: array[1]];
+		if ([contents isKindOfClass: [NSArray class]]) {
+			NSArray *array = contents;
+			_path = array[0];
+			if (array.count > 1 && array[1] != [NSNull null])
+				_metadata = [DZDropboxMetadata metadataWithDictionary: array[1]];
+		} else {
+			_path = contents;
+		}
     }
     return self;
+}
+
++ (instancetype)deltaEntryWithContents:(id)contents {
+	return [[self alloc] initWithContents: contents];
 }
 
 #pragma mark NSCoding

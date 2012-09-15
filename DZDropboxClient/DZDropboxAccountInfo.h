@@ -9,7 +9,7 @@
 
 @interface DZDropboxAccountInfo : NSObject <NSCoding>
 
-- (id)initWithDictionary:(NSDictionary*)dict;
++ (instancetype)accountInfoWithDictionary:(NSDictionary *)dict;
 
 @property (nonatomic, readonly) NSString *country;
 @property (nonatomic, readonly) NSString *displayName;

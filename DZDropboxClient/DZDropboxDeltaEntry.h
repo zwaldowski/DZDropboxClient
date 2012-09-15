@@ -13,6 +13,6 @@
 @property (nonatomic, readonly) NSString *path;
 @property (nonatomic, readonly) DZDropboxMetadata *metadata;
 
-- (instancetype)initWithArray:(NSArray *)arr;
++ (instancetype)deltaEntryWithContents:(id)contents;
 
 @end

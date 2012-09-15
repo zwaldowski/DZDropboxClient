@@ -8,7 +8,7 @@
 
 #import "DZOAuth1Client.h"
 
-@class DZDropboxMetadata, DZDropboxAccountInfo, DZDropboxDeltaEntry;
+@class DZDropboxMetadata, DZDropboxAccountInfo;
 
 typedef void(^DBBlock)(void);
 typedef void(^DBResultBlock)(DZDropboxMetadata *);

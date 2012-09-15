@@ -8,7 +8,7 @@
 
 @interface DZDropboxMetadata : NSObject <NSCoding>
 
-- (id)initWithDictionary:(NSDictionary*)dict;
++ (instancetype)metadataWithDictionary:(NSDictionary *)dict;
 
 @property (nonatomic, readonly) BOOL thumbnailExists;
 @property (nonatomic, readonly) long long totalBytes;

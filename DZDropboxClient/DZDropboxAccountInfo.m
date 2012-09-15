@@ -24,28 +24,32 @@
     return self;
 }
 
++ (instancetype)accountInfoWithDictionary:(NSDictionary *)dict {
+	return [[self alloc] initWithDictionary: dict];
+}
+
 #pragma mark NSCoding methods
 
 - (void)encodeWithCoder:(NSCoder*)coder {
-    [coder encodeObject:_original];
+    [coder encodeObject: _original];
 }
 
 - (id)initWithCoder:(NSCoder*)coder {
-	return [self initWithDictionary:[coder decodeObject]];
+	return [self initWithDictionary: [coder decodeObject]];
 }
 
 #pragma mark Quota methods
 
 - (long long)normalConsumedBytes {
-	return [(self.quota)[@"normal"] longLongValue];
+	return [self.quota[@"normal"] longLongValue];
 }
 
 - (long long)sharedConsumedBytes {
-	return [(self.quota)[@"shared"] longLongValue];
+	return [self.quota[@"shared"] longLongValue];
 }
 
 - (long long)totalBytes {
-	return [(self.quota)[@"quota"] longLongValue];
+	return [self.quota[@"quota"] longLongValue];
 }
 
 - (long long)totalConsumedBytes {
