@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CCFCD9216050D99003B87AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CCFCD9116050D99003B87AB /* UIKit.framework */; };
+		6CCFCD9416050D99003B87AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CCFCD9316050D99003B87AB /* Foundation.framework */; };
+		6CCFCD9616050D99003B87AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CCFCD9516050D99003B87AB /* CoreGraphics.framework */; };
+		6CCFCD9C16050D99003B87AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCD9A16050D99003B87AB /* InfoPlist.strings */; };
+		6CCFCD9E16050D99003B87AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCD9D16050D99003B87AB /* main.m */; };
+		6CCFCDA216050D99003B87AB /* DZDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDA116050D99003B87AB /* DZDAppDelegate.m */; };
+		6CCFCDA416050D99003B87AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCDA316050D99003B87AB /* Default.png */; };
+		6CCFCDA616050D99003B87AB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCDA516050D99003B87AB /* Default@2x.png */; };
+		6CCFCDA816050D9A003B87AB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCDA716050D9A003B87AB /* Default-568h@2x.png */; };
+		6CCFCDAB16050D9A003B87AB /* DZDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDAA16050D9A003B87AB /* DZDViewController.m */; };
+		6CCFCDAE16050D9A003B87AB /* DZDViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCDAC16050D9A003B87AB /* DZDViewController_iPhone.xib */; };
+		6CCFCDB116050D9A003B87AB /* DZDViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CCFCDAF16050D9A003B87AB /* DZDViewController_iPad.xib */; };
+		6CCFCDCB16050DD9003B87AB /* DZDropboxAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDBD16050DD9003B87AB /* DZDropboxAccountInfo.m */; };
+		6CCFCDCC16050DD9003B87AB /* DZDropboxClient+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDBF16050DD9003B87AB /* DZDropboxClient+iOS.m */; };
+		6CCFCDCD16050DD9003B87AB /* DZDropboxClient+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDC116050DD9003B87AB /* DZDropboxClient+OSX.m */; };
+		6CCFCDCE16050DD9003B87AB /* DZDropboxClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDC416050DD9003B87AB /* DZDropboxClient.m */; };
+		6CCFCDCF16050DD9003B87AB /* DZDropboxDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDC616050DD9003B87AB /* DZDropboxDeltaEntry.m */; };
+		6CCFCDD016050DD9003B87AB /* DZDropboxMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDC816050DD9003B87AB /* DZDropboxMetadata.m */; };
+		6CCFCDD116050DD9003B87AB /* DZOAuth1Client.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDCA16050DD9003B87AB /* DZOAuth1Client.m */; };
+		6CCFCDE716050DE5003B87AB /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDD516050DE5003B87AB /* AFHTTPClient.m */; };
+		6CCFCDE816050DE5003B87AB /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDD716050DE5003B87AB /* AFHTTPRequestOperation.m */; };
+		6CCFCDE916050DE5003B87AB /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDD916050DE5003B87AB /* AFImageRequestOperation.m */; };
+		6CCFCDEA16050DE5003B87AB /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDDB16050DE5003B87AB /* AFJSONRequestOperation.m */; };
+		6CCFCDEB16050DE5003B87AB /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDDD16050DE5003B87AB /* AFNetworkActivityIndicatorManager.m */; };
+		6CCFCDEC16050DE5003B87AB /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDE016050DE5003B87AB /* AFPropertyListRequestOperation.m */; };
+		6CCFCDED16050DE5003B87AB /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDE216050DE5003B87AB /* AFURLConnectionOperation.m */; };
+		6CCFCDEE16050DE5003B87AB /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDE416050DE5003B87AB /* AFXMLRequestOperation.m */; };
+		6CCFCDEF16050DE5003B87AB /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDE616050DE5003B87AB /* UIImageView+AFNetworking.m */; };
+		6CCFCDFB16050E75003B87AB /* DZAuthenticationStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDF816050E75003B87AB /* DZAuthenticationStore.m */; };
+		6CCFCDFC16050E75003B87AB /* DZOAuth1Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCFCDFA16050E75003B87AB /* DZOAuth1Credential.m */; };
+		6CCFCDFE160518A3003B87AB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CCFCDFD160518A3003B87AB /* Security.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6CCFCD8D16050D99003B87AB /* DZDropboxListSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DZDropboxListSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCFCD9116050D99003B87AB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6CCFCD9316050D99003B87AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6CCFCD9516050D99003B87AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6CCFCD9916050D99003B87AB /* DZDropboxListSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DZDropboxListSample-Info.plist"; sourceTree = "<group>"; };
+		6CCFCD9B16050D99003B87AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6CCFCD9D16050D99003B87AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6CCFCD9F16050D99003B87AB /* DZDropboxListSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DZDropboxListSample-Prefix.pch"; sourceTree = "<group>"; };
+		6CCFCDA016050D99003B87AB /* DZDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DZDAppDelegate.h; sourceTree = "<group>"; };
+		6CCFCDA116050D99003B87AB /* DZDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DZDAppDelegate.m; sourceTree = "<group>"; };
+		6CCFCDA316050D99003B87AB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		6CCFCDA516050D99003B87AB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		6CCFCDA716050D9A003B87AB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		6CCFCDA916050D9A003B87AB /* DZDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DZDViewController.h; sourceTree = "<group>"; };
+		6CCFCDAA16050D9A003B87AB /* DZDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DZDViewController.m; sourceTree = "<group>"; };
+		6CCFCDAD16050D9A003B87AB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DZDViewController_iPhone.xib; sourceTree = "<group>"; };
+		6CCFCDB016050D9A003B87AB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DZDViewController_iPad.xib; sourceTree = "<group>"; };
+		6CCFCDBC16050DD9003B87AB /* DZDropboxAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxAccountInfo.h; sourceTree = "<group>"; };
+		6CCFCDBD16050DD9003B87AB /* DZDropboxAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxAccountInfo.m; sourceTree = "<group>"; };
+		6CCFCDBE16050DD9003B87AB /* DZDropboxClient+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient+iOS.h"; sourceTree = "<group>"; };
+		6CCFCDBF16050DD9003B87AB /* DZDropboxClient+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+iOS.m"; sourceTree = "<group>"; };
+		6CCFCDC016050DD9003B87AB /* DZDropboxClient+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient+OSX.h"; sourceTree = "<group>"; };
+		6CCFCDC116050DD9003B87AB /* DZDropboxClient+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+OSX.m"; sourceTree = "<group>"; };
+		6CCFCDC216050DD9003B87AB /* DZDropboxClient-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient-Prefix.pch"; sourceTree = "<group>"; };
+		6CCFCDC316050DD9003B87AB /* DZDropboxClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxClient.h; sourceTree = "<group>"; };
+		6CCFCDC416050DD9003B87AB /* DZDropboxClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxClient.m; sourceTree = "<group>"; };
+		6CCFCDC516050DD9003B87AB /* DZDropboxDeltaEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxDeltaEntry.h; sourceTree = "<group>"; };
+		6CCFCDC616050DD9003B87AB /* DZDropboxDeltaEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxDeltaEntry.m; sourceTree = "<group>"; };
+		6CCFCDC716050DD9003B87AB /* DZDropboxMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxMetadata.h; sourceTree = "<group>"; };
+		6CCFCDC816050DD9003B87AB /* DZDropboxMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxMetadata.m; sourceTree = "<group>"; };
+		6CCFCDC916050DD9003B87AB /* DZOAuth1Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZOAuth1Client.h; sourceTree = "<group>"; };
+		6CCFCDCA16050DD9003B87AB /* DZOAuth1Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZOAuth1Client.m; sourceTree = "<group>"; };
+		6CCFCDD416050DE5003B87AB /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
+		6CCFCDD516050DE5003B87AB /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
+		6CCFCDD616050DE5003B87AB /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		6CCFCDD716050DE5003B87AB /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		6CCFCDD816050DE5003B87AB /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
+		6CCFCDD916050DE5003B87AB /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
+		6CCFCDDA16050DE5003B87AB /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		6CCFCDDB16050DE5003B87AB /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		6CCFCDDC16050DE5003B87AB /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		6CCFCDDD16050DE5003B87AB /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		6CCFCDDE16050DE5003B87AB /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		6CCFCDDF16050DE5003B87AB /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		6CCFCDE016050DE5003B87AB /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		6CCFCDE116050DE5003B87AB /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		6CCFCDE216050DE5003B87AB /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		6CCFCDE316050DE5003B87AB /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		6CCFCDE416050DE5003B87AB /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		6CCFCDE516050DE5003B87AB /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		6CCFCDE616050DE5003B87AB /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		6CCFCDF716050E75003B87AB /* DZAuthenticationStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZAuthenticationStore.h; sourceTree = "<group>"; };
+		6CCFCDF816050E75003B87AB /* DZAuthenticationStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZAuthenticationStore.m; sourceTree = "<group>"; };
+		6CCFCDF916050E75003B87AB /* DZOAuth1Credential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZOAuth1Credential.h; sourceTree = "<group>"; };
+		6CCFCDFA16050E75003B87AB /* DZOAuth1Credential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZOAuth1Credential.m; sourceTree = "<group>"; };
+		6CCFCDFD160518A3003B87AB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6CCFCD8A16050D99003B87AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCFCDFE160518A3003B87AB /* Security.framework in Frameworks */,
+				6CCFCD9216050D99003B87AB /* UIKit.framework in Frameworks */,
+				6CCFCD9416050D99003B87AB /* Foundation.framework in Frameworks */,
+				6CCFCD9616050D99003B87AB /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6CCFCD8216050D99003B87AB = {
+			isa = PBXGroup;
+			children = (
+				6CCFCDD316050DE5003B87AB /* AFNetworking */,
+				6CCFCDBB16050DD9003B87AB /* DZDropboxClient */,
+				6CCFCD9716050D99003B87AB /* DZDropboxListSample */,
+				6CCFCD9016050D99003B87AB /* Frameworks */,
+				6CCFCD8E16050D99003B87AB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6CCFCD8E16050D99003B87AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCD8D16050D99003B87AB /* DZDropboxListSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CCFCD9016050D99003B87AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCDFD160518A3003B87AB /* Security.framework */,
+				6CCFCD9116050D99003B87AB /* UIKit.framework */,
+				6CCFCD9316050D99003B87AB /* Foundation.framework */,
+				6CCFCD9516050D99003B87AB /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6CCFCD9716050D99003B87AB /* DZDropboxListSample */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCDA016050D99003B87AB /* DZDAppDelegate.h */,
+				6CCFCDA116050D99003B87AB /* DZDAppDelegate.m */,
+				6CCFCDA916050D9A003B87AB /* DZDViewController.h */,
+				6CCFCDAA16050D9A003B87AB /* DZDViewController.m */,
+				6CCFCDAC16050D9A003B87AB /* DZDViewController_iPhone.xib */,
+				6CCFCDAF16050D9A003B87AB /* DZDViewController_iPad.xib */,
+				6CCFCD9816050D99003B87AB /* Supporting Files */,
+			);
+			path = DZDropboxListSample;
+			sourceTree = "<group>";
+		};
+		6CCFCD9816050D99003B87AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCD9916050D99003B87AB /* DZDropboxListSample-Info.plist */,
+				6CCFCD9A16050D99003B87AB /* InfoPlist.strings */,
+				6CCFCD9D16050D99003B87AB /* main.m */,
+				6CCFCD9F16050D99003B87AB /* DZDropboxListSample-Prefix.pch */,
+				6CCFCDA316050D99003B87AB /* Default.png */,
+				6CCFCDA516050D99003B87AB /* Default@2x.png */,
+				6CCFCDA716050D9A003B87AB /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6CCFCDBB16050DD9003B87AB /* DZDropboxClient */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCDF716050E75003B87AB /* DZAuthenticationStore.h */,
+				6CCFCDF816050E75003B87AB /* DZAuthenticationStore.m */,
+				6CCFCDF916050E75003B87AB /* DZOAuth1Credential.h */,
+				6CCFCDFA16050E75003B87AB /* DZOAuth1Credential.m */,
+				6CCFCDBC16050DD9003B87AB /* DZDropboxAccountInfo.h */,
+				6CCFCDBD16050DD9003B87AB /* DZDropboxAccountInfo.m */,
+				6CCFCDBE16050DD9003B87AB /* DZDropboxClient+iOS.h */,
+				6CCFCDBF16050DD9003B87AB /* DZDropboxClient+iOS.m */,
+				6CCFCDC016050DD9003B87AB /* DZDropboxClient+OSX.h */,
+				6CCFCDC116050DD9003B87AB /* DZDropboxClient+OSX.m */,
+				6CCFCDC216050DD9003B87AB /* DZDropboxClient-Prefix.pch */,
+				6CCFCDC316050DD9003B87AB /* DZDropboxClient.h */,
+				6CCFCDC416050DD9003B87AB /* DZDropboxClient.m */,
+				6CCFCDC516050DD9003B87AB /* DZDropboxDeltaEntry.h */,
+				6CCFCDC616050DD9003B87AB /* DZDropboxDeltaEntry.m */,
+				6CCFCDC716050DD9003B87AB /* DZDropboxMetadata.h */,
+				6CCFCDC816050DD9003B87AB /* DZDropboxMetadata.m */,
+				6CCFCDC916050DD9003B87AB /* DZOAuth1Client.h */,
+				6CCFCDCA16050DD9003B87AB /* DZOAuth1Client.m */,
+			);
+			name = DZDropboxClient;
+			path = ../../DZDropboxClient;
+			sourceTree = "<group>";
+		};
+		6CCFCDD316050DE5003B87AB /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				6CCFCDD416050DE5003B87AB /* AFHTTPClient.h */,
+				6CCFCDD516050DE5003B87AB /* AFHTTPClient.m */,
+				6CCFCDD616050DE5003B87AB /* AFHTTPRequestOperation.h */,
+				6CCFCDD716050DE5003B87AB /* AFHTTPRequestOperation.m */,
+				6CCFCDD816050DE5003B87AB /* AFImageRequestOperation.h */,
+				6CCFCDD916050DE5003B87AB /* AFImageRequestOperation.m */,
+				6CCFCDDA16050DE5003B87AB /* AFJSONRequestOperation.h */,
+				6CCFCDDB16050DE5003B87AB /* AFJSONRequestOperation.m */,
+				6CCFCDDC16050DE5003B87AB /* AFNetworkActivityIndicatorManager.h */,
+				6CCFCDDD16050DE5003B87AB /* AFNetworkActivityIndicatorManager.m */,
+				6CCFCDDE16050DE5003B87AB /* AFNetworking.h */,
+				6CCFCDDF16050DE5003B87AB /* AFPropertyListRequestOperation.h */,
+				6CCFCDE016050DE5003B87AB /* AFPropertyListRequestOperation.m */,
+				6CCFCDE116050DE5003B87AB /* AFURLConnectionOperation.h */,
+				6CCFCDE216050DE5003B87AB /* AFURLConnectionOperation.m */,
+				6CCFCDE316050DE5003B87AB /* AFXMLRequestOperation.h */,
+				6CCFCDE416050DE5003B87AB /* AFXMLRequestOperation.m */,
+				6CCFCDE516050DE5003B87AB /* UIImageView+AFNetworking.h */,
+				6CCFCDE616050DE5003B87AB /* UIImageView+AFNetworking.m */,
+			);
+			name = AFNetworking;
+			path = ../../AFNetworking/AFNetworking;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6CCFCD8C16050D99003B87AB /* DZDropboxListSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CCFCDB416050D9A003B87AB /* Build configuration list for PBXNativeTarget "DZDropboxListSample" */;
+			buildPhases = (
+				6CCFCD8916050D99003B87AB /* Sources */,
+				6CCFCD8A16050D99003B87AB /* Frameworks */,
+				6CCFCD8B16050D99003B87AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DZDropboxListSample;
+			productName = DZDropboxListSample;
+			productReference = 6CCFCD8D16050D99003B87AB /* DZDropboxListSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6CCFCD8416050D99003B87AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = DZD;
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Dizzy Technology";
+			};
+			buildConfigurationList = 6CCFCD8716050D99003B87AB /* Build configuration list for PBXProject "DZDropboxListSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6CCFCD8216050D99003B87AB;
+			productRefGroup = 6CCFCD8E16050D99003B87AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6CCFCD8C16050D99003B87AB /* DZDropboxListSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6CCFCD8B16050D99003B87AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCFCD9C16050D99003B87AB /* InfoPlist.strings in Resources */,
+				6CCFCDA416050D99003B87AB /* Default.png in Resources */,
+				6CCFCDA616050D99003B87AB /* Default@2x.png in Resources */,
+				6CCFCDA816050D9A003B87AB /* Default-568h@2x.png in Resources */,
+				6CCFCDAE16050D9A003B87AB /* DZDViewController_iPhone.xib in Resources */,
+				6CCFCDB116050D9A003B87AB /* DZDViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CCFCD8916050D99003B87AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCFCD9E16050D99003B87AB /* main.m in Sources */,
+				6CCFCDA216050D99003B87AB /* DZDAppDelegate.m in Sources */,
+				6CCFCDAB16050D9A003B87AB /* DZDViewController.m in Sources */,
+				6CCFCDCB16050DD9003B87AB /* DZDropboxAccountInfo.m in Sources */,
+				6CCFCDCC16050DD9003B87AB /* DZDropboxClient+iOS.m in Sources */,
+				6CCFCDCD16050DD9003B87AB /* DZDropboxClient+OSX.m in Sources */,
+				6CCFCDCE16050DD9003B87AB /* DZDropboxClient.m in Sources */,
+				6CCFCDCF16050DD9003B87AB /* DZDropboxDeltaEntry.m in Sources */,
+				6CCFCDD016050DD9003B87AB /* DZDropboxMetadata.m in Sources */,
+				6CCFCDD116050DD9003B87AB /* DZOAuth1Client.m in Sources */,
+				6CCFCDE716050DE5003B87AB /* AFHTTPClient.m in Sources */,
+				6CCFCDE816050DE5003B87AB /* AFHTTPRequestOperation.m in Sources */,
+				6CCFCDE916050DE5003B87AB /* AFImageRequestOperation.m in Sources */,
+				6CCFCDEA16050DE5003B87AB /* AFJSONRequestOperation.m in Sources */,
+				6CCFCDEB16050DE5003B87AB /* AFNetworkActivityIndicatorManager.m in Sources */,
+				6CCFCDEC16050DE5003B87AB /* AFPropertyListRequestOperation.m in Sources */,
+				6CCFCDED16050DE5003B87AB /* AFURLConnectionOperation.m in Sources */,
+				6CCFCDEE16050DE5003B87AB /* AFXMLRequestOperation.m in Sources */,
+				6CCFCDEF16050DE5003B87AB /* UIImageView+AFNetworking.m in Sources */,
+				6CCFCDFB16050E75003B87AB /* DZAuthenticationStore.m in Sources */,
+				6CCFCDFC16050E75003B87AB /* DZOAuth1Credential.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6CCFCD9A16050D99003B87AB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CCFCD9B16050D99003B87AB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6CCFCDAC16050D9A003B87AB /* DZDViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CCFCDAD16050D9A003B87AB /* en */,
+			);
+			name = DZDViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		6CCFCDAF16050D9A003B87AB /* DZDViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CCFCDB016050D9A003B87AB /* en */,
+			);
+			name = DZDViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6CCFCDB216050D9A003B87AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6CCFCDB316050D9A003B87AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6CCFCDB516050D9A003B87AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DZDropboxListSample/DZDropboxListSample-Prefix.pch";
+				INFOPLIST_FILE = "DZDropboxListSample/DZDropboxListSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6CCFCDB616050D9A003B87AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DZDropboxListSample/DZDropboxListSample-Prefix.pch";
+				INFOPLIST_FILE = "DZDropboxListSample/DZDropboxListSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CCFCD8716050D99003B87AB /* Build configuration list for PBXProject "DZDropboxListSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCFCDB216050D9A003B87AB /* Debug */,
+				6CCFCDB316050D9A003B87AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CCFCDB416050D9A003B87AB /* Build configuration list for PBXNativeTarget "DZDropboxListSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCFCDB516050D9A003B87AB /* Debug */,
+				6CCFCDB616050D9A003B87AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6CCFCD8416050D99003B87AB /* Project object */;
+}
