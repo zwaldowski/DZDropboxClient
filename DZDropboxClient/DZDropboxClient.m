@@ -348,12 +348,12 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	[self loadRevisions:path limit:10 success:success failure:failure];
 }
 
-- (void)loadRevisions:(NSString *)path limit:(NSInteger)limit success:(DBResultsBlock)success failure:(DBErrorBlock)failure {
+- (void)loadRevisions:(NSString *)path limit:(NSUInteger)limit success:(DBResultsBlock)success failure:(DBErrorBlock)failure {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 	
 	NSString *fullPath = [NSString stringWithFormat:@"revisions/%@%@", [[self class] dz_root], path];
-	NSString *limitStr = [NSString stringWithFormat:@"%ld", limit];
+	NSString *limitStr = [NSString stringWithFormat:@"%d", limit];
     NSDictionary *params = [NSDictionary dictionaryWithObject:limitStr forKey:@"rev_limit"];
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
 		if ([responseObject isKindOfClass:[NSDictionary class]])

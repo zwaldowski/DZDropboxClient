@@ -8,7 +8,6 @@
 
 #import "DZOAuth1Client.h"
 #import "AFHTTPRequestOperation.h"
-#import <objc/runtime.h>
 #import <CommonCrypto/CommonHMAC.h>
 #import "DZOAuth1Credential.h"
 

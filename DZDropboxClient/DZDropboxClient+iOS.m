@@ -8,7 +8,6 @@
 
 #import "DZDropboxClient+iOS.h"
 #import "DZOAuth1Credential.h"
-#import <objc/runtime.h>
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 
@@ -29,7 +28,7 @@ extern NSDictionary * DZParametersFromURLQuery(NSURL *URL);
 
 @end
 
-static char DZDropboxOutgoingClientKey;
+static DZDropboxClient *outgoingClient = nil;
 
 #pragma mark -
 
@@ -44,7 +43,6 @@ static char DZDropboxOutgoingClientKey;
 }
 
 + (BOOL)handleOpenURL:(NSURL *)URL cancelled:(void(^)(void))block {
-	id outgoingClient = objc_getAssociatedObject(self, &DZDropboxOutgoingClientKey);
 	if (!outgoingClient)
 		return NO;
 	return [outgoingClient handleOpenURL:URL];
@@ -105,7 +103,7 @@ static char DZDropboxOutgoingClientKey;
 	
 	NSURL *dbURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/connect", DZDropboxProtocol, DZDropboxAPIVersion]];
 	NSString *urlStr = [[UIApplication sharedApplication] canOpenURL:dbURL] ? [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr] : [NSString stringWithFormat:@"https://%@/%@/connect?k=%@&s=%@&dca=1&%@", DZDropboxWebHost, DZDropboxAPIVersion, consumerKey, secret, userIdStr];
-	objc_setAssociatedObject([self class], &DZDropboxOutgoingClientKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	outgoingClient = self;
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
 }
 

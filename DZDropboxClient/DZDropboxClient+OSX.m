@@ -129,14 +129,12 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 
 #pragma mark Properties
 
-static char DZDropboxIsAuthenticatingKey;
-
 - (BOOL)isAuthenticating {
-	return [[self associatedValueForKey:&DZDropboxIsAuthenticatingKey] boolValue];
+	return _dz_isAuthenticating;
 }
 
 - (void)setAuthenticating:(BOOL)authenticating {
-	[self associateValue:[NSNumber numberWithBool:authenticating] withKey:&DZDropboxIsAuthenticatingKey];
+	_dz_isAuthenticating = authenticating;
 	[[NSNotificationCenter defaultCenter] postNotificationName:DZDropboxClientAuthenticationChangedNotification object:self];
 }
 

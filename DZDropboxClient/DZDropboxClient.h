@@ -27,7 +27,10 @@ typedef enum {
     DZDropboxClientRootAppFolder = 1
 } DZDropboxClientRoot;
 
-@interface DZDropboxClient : DZOAuth1Client <NSCoding>
+@interface DZDropboxClient : DZOAuth1Client <NSCoding> {
+	@package
+	BOOL _dz_isAuthenticating;
+}
 
 + (DZDropboxClientRoot)clientRoot; 
 
@@ -64,7 +67,7 @@ typedef enum {
 - (void)uploadFileAtURL:(NSURL *)filename toPath:(NSString *)remoteName overwrite:(BOOL)shouldOverwrite success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
 
 - (void)loadRevisions:(NSString *)path success:(DBResultsBlock)success failure:(DBErrorBlock)failure;
-- (void)loadRevisions:(NSString *)path limit:(NSInteger)limit  success:(DBResultsBlock)success failure:(DBErrorBlock)failure;
+- (void)loadRevisions:(NSString *)path limit:(NSUInteger)limit  success:(DBResultsBlock)success failure:(DBErrorBlock)failure;
 
 - (void)restoreFile:(NSString *)path toRevision:(NSString *)revision success:(DBResultBlock)success failure:(DBErrorBlock)failure;
 
