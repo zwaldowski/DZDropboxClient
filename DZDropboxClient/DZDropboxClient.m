@@ -69,14 +69,14 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 #pragma mark -
 
 @implementation DZDropboxClient {
-	NSURL *_contentBaseURL;
+	NSString *_contentBase;
 }
 
 #pragma mark Init
 
 - (id)initWithUserID:(NSString *)userID {
 	NSURL *baseURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIHost, DZDropboxAPIVersion]];
-    NSURL *contentURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIContentHost, DZDropboxAPIVersion]];
+    NSString *contentBaseURL = [NSString stringWithFormat:@"https://%@/%@/", DZDropboxAPIContentHost, DZDropboxAPIVersion];
     DZOAuth1Credential *credential = nil;
     
     if (userID.length && ![userID isEqualToString: DZDropboxUnknownUserID]) {
@@ -88,7 +88,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
     
     if ((self = [super initWithBaseURL: baseURL credential: credential])) {
 		_userID = userID.length ? [userID copy] : DZDropboxUnknownUserID;
-		_contentBaseURL = contentURL;
+		_contentBase = contentBaseURL;
 
 		static dispatch_once_t onceToken;
 		static NSString *userAgent = nil;
@@ -122,19 +122,17 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	return [self initWithUserID:[aDecoder decodeObject]];
+	return [self initWithUserID: [aDecoder decodeObject]];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeObject:_userID];
+	[aCoder encodeObject: _userID];
 }
 
 #pragma mark URL request factory
 
 - (NSMutableURLRequest *)contentRequestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
-	NSMutableURLRequest *orig = [self requestWithMethod:method path:path parameters:parameters];
-	orig.URL = [NSURL URLWithString:path relativeToURL:_contentBaseURL];
-	return orig;
+	return [self requestWithMethod: method path: [_contentBase stringByAppendingString: path] parameters: parameters];
 }
 
 #pragma mark Loading methods
