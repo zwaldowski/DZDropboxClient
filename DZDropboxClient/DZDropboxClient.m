@@ -353,7 +353,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(success);
 	
 	NSString *fullPath = [NSString stringWithFormat:@"revisions/%@%@", [[self class] dz_root], path];
-	NSString *limitStr = [NSString stringWithFormat:@"%d", limit];
+	NSString *limitStr = [NSString stringWithFormat:@"%ld", limit];
     NSDictionary *params = [NSDictionary dictionaryWithObject:limitStr forKey:@"rev_limit"];
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
 		if ([responseObject isKindOfClass:[NSDictionary class]])

@@ -8,6 +8,7 @@
 
 #import "DZDropboxClient+OSX.h"
 #import "AFJSONRequestOperation.h"
+#import "DZOAuth1Credential.h"
 
 #if defined(MAC_OS_X_VERSION_MIN_REQUIRED) && !defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
@@ -98,7 +99,7 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 				DZDropboxParseResponseString(operation.responseString, &token, &secret, &uid);
                 
                 NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: token, @"oauth_token", secret, @"oauth_token_secret", nil];
-                [self dz_setCredential: [[DZOAuth1Credential alloc] initWithResponseObject: params]];
+                [self dz_setCredential: [DZOAuth1Credential storeWithResponseObject: params username: uid]];
                 [self dz_setUserID: uid];
 				
 				self.authenticating = NO;
