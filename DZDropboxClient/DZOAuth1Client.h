@@ -8,23 +8,20 @@
 
 #import "AFHTTPClient.h"
 
-typedef enum {
-    DZOAuthSignatureMethodPlaintext = 0,
-    DZOAuthSignatureMethodHMAC_SHA1 = 1,
-} DZOAuthSignatureMethod;
+typedef NS_ENUM(NSUInteger, DZOAuthSignatureMethod) {
+    DZOAuthSignatureMethodPlaintext,
+    DZOAuthSignatureMethodHMAC_SHA1
+};
 
 @class DZOAuth1Credential;
 
 @interface DZOAuth1Client : AFHTTPClient
 
 - (id)initWithBaseURL:(NSURL *)URL credential:(DZOAuth1Credential *)credential;
-@property (nonatomic, readonly) DZOAuth1Credential *credential;
+
+@property (nonatomic, strong) DZOAuth1Credential *credential;
 
 - (NSMutableURLRequest *)xAuthRequestForURL:(NSURL *)endpoint username:(NSString *)username password:(NSString *)password;
-
-@end
-
-@interface DZOAuth1Client (DZOAuthClasswideKeys)
 
 + (NSString *)consumerKey;
 + (NSString *)consumerSecret;
