@@ -15,7 +15,6 @@
 @property (nonatomic, copy, readonly) NSString *verifier;
 
 + (id)storeForServiceName:(NSString *)name responseObject:(id)data username:(NSString *)username;
-+ (id)storeWithResponseObject:(id)data username:(NSString *)username;
 
 @end
 

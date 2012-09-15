@@ -99,9 +99,9 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 				DZDropboxParseResponseString(operation.responseString, &token, &secret, &uid);
                 
                 NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: token, @"oauth_token", secret, @"oauth_token_secret", nil];
-                [self dz_setCredential: [DZOAuth1Credential storeWithResponseObject: params username: uid]];
+                [self dz_setCredential: [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: uid]];
                 [self dz_setUserID: uid];
-				
+
 				self.authenticating = NO;
 				[[NSNotificationCenter defaultCenter] removeObserver:self];
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {

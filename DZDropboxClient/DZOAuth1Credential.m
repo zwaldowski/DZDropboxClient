@@ -21,10 +21,6 @@
 	return [self storeForServiceName: name username: username contents: contents userInfo: userInfo];
 }
 
-+ (id)storeWithResponseObject:(id)data username:(NSString *)username {
-	return [self storeForServiceName: nil responseObject: data username: username];
-}
-
 #pragma mark -
 
 + (NSSet *)keyPathsForValuesAffectingContents {
