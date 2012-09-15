@@ -40,13 +40,12 @@ static inline NSString *NSStringFromThumbnailSize(DZDropboxThumbnailSize size){
 	return value;
 }
 
-extern NSDictionary * DZParametersFromURLQuery(NSURL *URL);
+extern NSDictionary *DZParametersFromURLQuery(NSURL *URL);
 
-NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
-	NSString *queryString = URL.query;
+NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    if (queryString) {
-        NSScanner *parameterScanner = [[NSScanner alloc] initWithString:queryString];
+    if (URL.query.length) {
+        NSScanner *parameterScanner = [[NSScanner alloc] initWithString: URL.query];
         NSString *name = nil;
         NSString *value = nil;
         
@@ -64,7 +63,6 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
             }
         }
     }
-    
     return parameters;
 }
 
@@ -83,7 +81,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
     
     if (userID.length && ![userID isEqualToString: DZDropboxUnknownUserID]) {
         NSDictionary *credentialStores = [[NSUserDefaults standardUserDefaults] objectForKey:DZDropboxSavedCredentialsKey];
-        NSData *credentialData = credentialStores ? [credentialStores objectForKey:userID] : nil;
+        NSData *credentialData = credentialStores ? credentialStores[userID] : nil;
         if (credentialData.length)
             credential = [NSKeyedUnarchiver unarchiveObjectWithData: credentialData];
     }
@@ -101,7 +99,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 			NSString *appVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 			userAgent = [[NSString alloc] initWithFormat:@"%@/%@", appName, appVersion];
 
-			NSString *lang = [[NSLocale preferredLanguages] objectAtIndex:0];
+			NSString *lang = [NSLocale preferredLanguages][0];
 			if ([[[NSBundle mainBundle] localizations] containsObject:lang])
 				preferredLang = [lang copy];
 			else
@@ -171,19 +169,19 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 }
 
 - (void)loadMetadata:(NSString *)path hash:(NSString *)hash success:(DBResultBlock)success failure:(DBErrorBlock)failure {
-    NSDictionary *params = hash ? [NSDictionary dictionaryWithObject:hash forKey:@"hash"] : nil;
+    NSDictionary *params = hash ? @{@"hash": hash} : nil;
 	[self loadMetadata:path parameters:params success:success failure:failure];
 }
 
 - (void)loadMetadata:(NSString *)path revision:(NSString *)rev success:(DBResultBlock)success failure:(DBErrorBlock)failure {
-    NSDictionary *params = rev ? [NSDictionary dictionaryWithObject:rev forKey:@"rev"] : nil;
+    NSDictionary *params = rev ? @{@"rev": rev} : nil;
 	[self loadMetadata:path parameters:params success:success failure:failure];
 }
 
 - (void)loadDelta:(NSString *)sinceCursor success:(void(^)(NSArray *entries, BOOL shouldReset, NSString *cursor, BOOL hasMore))success failure:(DBErrorBlock)failure {
 	NSParameterAssert(success);
 	
-	NSDictionary *params = sinceCursor ? [NSDictionary dictionaryWithObject:sinceCursor forKey:@"cursor"] : nil;
+	NSDictionary *params = sinceCursor ? @{@"cursor": sinceCursor} : nil;
 	[self postPath:@"delta" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		NSArray *entryObjects = responseObject[@"entries"];
@@ -208,10 +206,10 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(success);
 	
 	NSString* fullPath = [NSString stringWithFormat:@"files/%@%@", [[self class] dz_root], path];
-	NSDictionary *params = rev ? [NSDictionary dictionaryWithObject:rev forKey:@"rev"] : nil;
+	NSDictionary *params = rev ? @{@"rev": rev} : nil;
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path:fullPath parameters:params];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSData *metadataObj = [[operation.response.allHeaderFields objectForKey:@"X-Dropbox-Metadata"] dataUsingEncoding:NSUTF8StringEncoding];
+		NSData *metadataObj = [(operation.response.allHeaderFields)[@"X-Dropbox-Metadata"] dataUsingEncoding:NSUTF8StringEncoding];
 		NSDictionary *metadataDict = [NSJSONSerialization JSONObjectWithData:metadataObj options:0 error:NULL];
 		success([[DZDropboxMetadata alloc] initWithDictionary: metadataDict]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -236,7 +234,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(destinationURL);
 
 	NSString* fullPath = [NSString stringWithFormat:@"files/%@%@", [[self class] dz_root], path];
-	NSDictionary *params = rev ? [NSDictionary dictionaryWithObject:rev forKey:@"rev"] : nil;
+	NSDictionary *params = rev ? @{@"rev": rev} : nil;
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path:fullPath parameters:params];
 	
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -331,7 +329,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
     }
 
 	NSString *fullPath = [NSString stringWithFormat :@"files_put/%@%@", [[self class] dz_root], remoteName];
-	NSDictionary *params = [NSDictionary dictionaryWithObject: shouldOverwrite ? @"true" : @"false" forKey:@"overwrite"];
+	NSDictionary *params = @{@"overwrite": shouldOverwrite ? @"true" : @"false"};
 	NSMutableURLRequest *request = [self contentRequestWithMethod: @"PUT" path: fullPath parameters: params];
     [request addValue: [NSString stringWithFormat: @"%qu", size] forHTTPHeaderField: @"Content-Length"];
     [request addValue: @"application/octet-stream" forHTTPHeaderField: @"Content-Type"];
@@ -363,10 +361,10 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	
 	NSString *fullPath = [NSString stringWithFormat:@"revisions/%@%@", [[self class] dz_root], path];
 	NSString *limitStr = [NSString stringWithFormat:@"%d", limit];
-    NSDictionary *params = [NSDictionary dictionaryWithObject:limitStr forKey:@"rev_limit"];
+    NSDictionary *params = @{@"rev_limit": limitStr};
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
 		if ([responseObject isKindOfClass:[NSDictionary class]])
-			responseObject = [NSArray arrayWithObject:responseObject];
+			responseObject = @[responseObject];
 
 		NSMutableArray *revisions = [NSMutableArray arrayWithCapacity: responseObject.count];
 		for (NSDictionary *obj in responseObject) {
@@ -384,7 +382,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
     
 	NSString *fullPath = [NSString stringWithFormat:@"restore/%@%@", [[self class] dz_root], path];
-    NSDictionary *params = [NSDictionary dictionaryWithObject:revision forKey:@"rev"];
+    NSDictionary *params = @{@"rev": revision};
 	[self postPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (!success)
 			return;
@@ -400,7 +398,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 
-	NSDictionary* params = [NSDictionary dictionaryWithObject:keyword forKey:@"query"];
+	NSDictionary* params = @{@"query": keyword};
 	NSString* fullPath = [NSString stringWithFormat:@"search/%@%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
 		if ([responseObject isKindOfClass:[NSDictionary class]])
@@ -421,9 +419,8 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 - (void)createFolderAtPath:(NSString *)path success:(DBResultBlock)success failure:(DBErrorBlock)failure {
 	NSParameterAssert(path.length);
 	
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							[[self class] dz_root], @"root",
-							path, @"path", nil];
+	NSDictionary* params = @{@"root": [[self class] dz_root],
+							@"path": path};
 	[self postPath:@"fileops/create_folder" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (!success)
 			return;
@@ -438,9 +435,8 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 - (void)deleteItemAtPath:(NSString *)path success:(DBBlock)success failure:(DBErrorBlock)failure {
 	NSParameterAssert(path);
 	
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							[[self class] dz_root], @"root",
-							path, @"path", nil];
+	NSDictionary* params = @{@"root": [[self class] dz_root],
+							@"path": path};
 	[self postPath:@"fileops/delete" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (success)
 			success();
@@ -454,10 +450,9 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(from.length);
 	NSParameterAssert(to.length);
 	
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							[[self class] dz_root], @"root",
-							from, @"from_path",
-							to, @"to_path", nil];
+	NSDictionary* params = @{@"root": [[self class] dz_root],
+							@"from_path": from,
+							@"to_path": to};
 	[self postPath:@"fileops/copy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (!success)
 			return;
@@ -473,10 +468,9 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(from.length);
 	NSParameterAssert(to.length);
 	
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							[[self class] dz_root], @"root",
-							from, @"from_path",
-							to, @"to_path", nil];
+	NSDictionary* params = @{@"root": [[self class] dz_root],
+							@"from_path": from,
+							@"to_path": to};
 	[self postPath:@"fileops/move" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (!success)
 			return;
@@ -492,10 +486,10 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 	
-	NSDictionary *params = [NSDictionary dictionaryWithObject:path forKey:@"path"];
+	NSDictionary *params = @{@"path": path};
     NSString *fullPath = [NSString stringWithFormat:@"copy_ref/%@%@", [[self class] dz_root], path];
 	[self postPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		success([responseObject objectForKey:@"copy_ref"]);
+		success(responseObject[@"copy_ref"]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (failure)
 			failure(error);
@@ -506,10 +500,9 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(fromRef.length);
 	NSParameterAssert(to.length);
 	
-	NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-							[[self class] dz_root], @"root",
-							fromRef, @"from_copy_ref",
-							to, @"to_path", nil];
+	NSDictionary* params = @{@"root": [[self class] dz_root],
+							@"from_copy_ref": fromRef,
+							@"to_path": to};
 	[self postPath:@"fileops/copy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (!success)
 			return;
@@ -527,7 +520,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 
 	NSString* fullPath = [NSString stringWithFormat:@"shares/%@%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		success([responseObject objectForKey:@"url"]);
+		success(responseObject[@"url"]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (error)
 			failure(error);
@@ -540,7 +533,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 
 	NSString* fullPath = [NSString stringWithFormat:@"media/%@%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		success([NSURL URLWithString:[responseObject objectForKey:@"url"]]);
+		success([NSURL URLWithString:responseObject[@"url"]]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (error)
 			failure(error);
@@ -559,7 +552,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	NSIndexSet *matches = [self.operationQueue.operations indexesOfObjectsPassingTest:^BOOL(NSOperation *operation, NSUInteger idx, BOOL *stop) {
 		if ([operation isKindOfClass:[AFHTTPRequestOperation class]] && (!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]) && [path isEqualToString:[[[(AFHTTPRequestOperation *)operation request] URL] path]]) {
 			NSURL *requestURL = [[(AFHTTPRequestOperation *)operation request] URL];
-			return [[DZParametersFromURLQuery(requestURL) objectForKey:@"size"] isEqualToString:sizeValue];
+			return [DZParametersFromURLQuery(requestURL)[@"size"] isEqualToString:sizeValue];
 		}
 		return NO;
 	}];
@@ -603,7 +596,7 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 	if (!self.credential)
 		[credentialStores removeObjectForKey:userID];
 	else
-		[credentialStores setObject: [NSKeyedArchiver archivedDataWithRootObject: self.credential] forKey:userID];
+		credentialStores[userID] = [NSKeyedArchiver archivedDataWithRootObject: self.credential];
 	
 	[sud setObject:credentialStores forKey:DZDropboxSavedCredentialsKey];
 	[sud synchronize];
@@ -628,15 +621,16 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
 }
 
 + (void)unlinkAll {
-	NSDictionary *credentialStore = [[NSUserDefaults standardUserDefaults] objectForKey:DZDropboxSavedCredentialsKey];
+	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
+	NSDictionary *credentialStore = [sud objectForKey:DZDropboxSavedCredentialsKey];
 	if (credentialStore.count) {
         [credentialStore enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *userID, NSData *obj, BOOL *stop) {
             DZOAuth1Credential *credential = [NSKeyedUnarchiver unarchiveObjectWithData: obj];
 			[credential evict];
         }];
     }
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:DZDropboxSavedCredentialsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[sud removeObjectForKey:DZDropboxSavedCredentialsKey];
+    [sud synchronize];
 }
 
 + (DZDropboxClientRoot)clientRoot {

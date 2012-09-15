@@ -23,8 +23,8 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 		if (vals.count != 2)
 			return;
 		
-		NSString *name = [vals objectAtIndex:0];
-		NSString *val = [vals objectAtIndex:1];
+		NSString *name = components[0];
+		NSString *val = components[1];
 		
 		if ([name isEqual:@"oauth_token"])
 			*pToken = val;

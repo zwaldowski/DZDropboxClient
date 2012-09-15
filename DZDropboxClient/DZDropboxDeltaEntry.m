@@ -13,9 +13,9 @@
 
 - (instancetype)initWithArray:(NSArray *)array {
     if ((self = [super init])) {
-        _path = [array objectAtIndex:0];
-        if ([array objectAtIndex:1] != [NSNull null])
-            _metadata = [[DZDropboxMetadata alloc] initWithDictionary:[array objectAtIndex:1]];
+        _path = array[0];
+        if (array[1] != [NSNull null])
+            _metadata = [[DZDropboxMetadata alloc] initWithDictionary: array[1]];
     }
     return self;
 }
@@ -24,8 +24,8 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	if ((self = [super init])) {
-		_path = [aDecoder decodeObjectForKey:@"path"];
-		_metadata = [aDecoder decodeObjectForKey:@"metadata"];
+		_path = [aDecoder decodeObjectForKey: @"path"];
+		_metadata = [aDecoder decodeObjectForKey: @"metadata"];
 	}
 	return self;
 }

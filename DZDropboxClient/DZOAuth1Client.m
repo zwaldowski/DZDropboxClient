@@ -11,7 +11,9 @@
 #import <CommonCrypto/CommonHMAC.h>
 #import "DZOAuth1Credential.h"
 
-extern void DZConcreteImplementation(id obj, SEL sel, Class cls) {
+#define DZConcreteImplementation(baseClass) _DZConcreteImplementation(self, _cmd, baseClass)
+
+extern void _DZConcreteImplementation(id obj, SEL sel, Class cls) {
 	Class objectClass = [obj class];
 	const char *annotate = "-";
 	if (obj == objectClass)
@@ -38,18 +40,6 @@ static inline NSString *NSStringFromSignatureMethod(DZOAuthSignatureMethod metho
 		case DZOAuthSignatureMethodHMAC_SHA1:	value = @"HMAC-SHA1"; break;
 	}
 	return value;
-}
-
-static NSDictionary *DZURLQueryDictionary(NSURL *URL) {
-	NSArray *pairs = [URL.query componentsSeparatedByString:@"&"];
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithCapacity:pairs.count];
-    [pairs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSArray *elements = [obj componentsSeparatedByString:@"="];
-        NSString *key = [elements objectAtIndex:0];
-        NSString *value = (elements.count > 1) ? [elements objectAtIndex:1] : @"";
-        [parameters setObject:value forKey:key];
-    }];
-	return parameters;
 }
 
 static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method, NSString *consumerSecret, NSString *tokenSecret) {
@@ -129,7 +119,6 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 }
 
 - (id)initWithBaseURL:(NSURL *)url {
-	NSAssert([[self class] consumerKey] && [[self class] consumerSecret], @"Please set a consumer key and secret!");
 	if ((self = [super initWithBaseURL:url])) {
 		[self dz_baseSetup];
 	}
@@ -154,8 +143,6 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 #pragma mark - Request Signing
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
-	NSAssert([[self class] consumerKey] && [[self class] consumerSecret], @"Please set a consumer key and secret!");
-
 	NSMutableURLRequest *request = [super requestWithMethod:method path:path parameters:parameters];
 	request.timeoutInterval = 20;
 	request.HTTPShouldHandleCookies = NO;
@@ -176,8 +163,14 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 	}] allObjects]];
 
     // Add parameters from the query string
-    NSMutableDictionary *query = [DZURLQueryDictionary(request.URL) mutableCopy];
-	
+	NSArray *pairs = [request.URL.query componentsSeparatedByString:@"&"];
+	NSMutableDictionary *query = [NSMutableDictionary dictionaryWithCapacity:pairs.count];
+    [pairs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSArray *elements = [obj componentsSeparatedByString:@"="];
+        NSString *key = elements[0];
+        NSString *value = elements.count > 1 ? elements[1] : @"";
+		query[key] = value;
+    }];
 	[query addEntriesFromDictionary: headers];
 	
 	// Add parameters from the request body
@@ -217,27 +210,27 @@ static NSString *const DZOAuthSubclassMethod = @"DZOAuthSubclassMethod";
 }
 
 + (NSString *)consumerKey {
-    DZConcreteImplementation(self, _cmd, [DZOAuth1Client class]);
+    DZConcreteImplementation([DZOAuth1Client class]);
     return nil;
 }
 
 + (NSString *)consumerSecret {
-    DZConcreteImplementation(self, _cmd, [DZOAuth1Client class]);
+    DZConcreteImplementation([DZOAuth1Client class]);
     return nil;
 }
 
 + (NSURL *)requestTokenURL {
-    DZConcreteImplementation(self, _cmd, [DZOAuth1Client class]);
+    DZConcreteImplementation([DZOAuth1Client class]);
     return nil;
 }
 
 + (NSURL *)authorizationURL {
-    DZConcreteImplementation(self, _cmd, [DZOAuth1Client class]);
+    DZConcreteImplementation([DZOAuth1Client class]);
     return nil;
 }
 
 + (NSURL *)accessTokenURL {
-    DZConcreteImplementation(self, _cmd, [DZOAuth1Client class]);
+    DZConcreteImplementation([DZOAuth1Client class]);
     return nil;
 }
 

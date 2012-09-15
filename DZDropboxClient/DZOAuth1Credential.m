@@ -13,11 +13,9 @@
 @dynamic token, secret, verifier;
 
 + (id)storeForServiceName:(NSString *)name responseObject:(id)data username:(NSString *)username {
-	NSDictionary *contents = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [data valueForKey: @"oauth_token"], @"token",
-							  [data valueForKey: @"oauth_token_secret"], @"secret",
-							  nil];
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject: [data valueForKey: @"oauth_verifier"] forKey: @"verifier"];
+	NSDictionary *contents = @{@"token": [data valueForKey: @"oauth_token"],
+							  @"secret": [data valueForKey: @"oauth_token_secret"]};
+	NSDictionary *userInfo = @{@"verifier": [data valueForKey: @"oauth_verifier"]};
 	return [self storeForServiceName: name username: username contents: contents userInfo: userInfo];
 }
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Dizzy Technology. All rights reserved.
 //
 
-@protocol DZMutableAuthenticationStore
+@protocol DZMutableAuthenticationStore <NSObject>
 
 @property (nonatomic, copy, readwrite) NSString *username;
 @property (nonatomic, copy, readwrite) id <NSObject, NSCoding> contents;

@@ -64,7 +64,6 @@
 		6CCFCDBF16050DD9003B87AB /* DZDropboxClient+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+iOS.m"; sourceTree = "<group>"; };
 		6CCFCDC016050DD9003B87AB /* DZDropboxClient+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient+OSX.h"; sourceTree = "<group>"; };
 		6CCFCDC116050DD9003B87AB /* DZDropboxClient+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DZDropboxClient+OSX.m"; sourceTree = "<group>"; };
-		6CCFCDC216050DD9003B87AB /* DZDropboxClient-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DZDropboxClient-Prefix.pch"; sourceTree = "<group>"; };
 		6CCFCDC316050DD9003B87AB /* DZDropboxClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxClient.h; sourceTree = "<group>"; };
 		6CCFCDC416050DD9003B87AB /* DZDropboxClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZDropboxClient.m; sourceTree = "<group>"; };
 		6CCFCDC516050DD9003B87AB /* DZDropboxDeltaEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZDropboxDeltaEntry.h; sourceTree = "<group>"; };
@@ -185,7 +184,6 @@
 				6CCFCDBF16050DD9003B87AB /* DZDropboxClient+iOS.m */,
 				6CCFCDC016050DD9003B87AB /* DZDropboxClient+OSX.h */,
 				6CCFCDC116050DD9003B87AB /* DZDropboxClient+OSX.m */,
-				6CCFCDC216050DD9003B87AB /* DZDropboxClient-Prefix.pch */,
 				6CCFCDC316050DD9003B87AB /* DZDropboxClient.h */,
 				6CCFCDC416050DD9003B87AB /* DZDropboxClient.m */,
 				6CCFCDC516050DD9003B87AB /* DZDropboxDeltaEntry.h */,

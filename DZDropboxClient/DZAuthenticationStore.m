@@ -54,7 +54,7 @@ static SEL setterForProperty(objc_property_t property)
 	if (setterName)
 		setter = sel_getUid(setterName);
 	else {
-		NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
+		NSString *propertyName = @(property_getName(property));
 		unichar firstChar = [propertyName characterAtIndex: 0];
 		NSString *coda = [propertyName substringFromIndex: 1];
 		setter = NSSelectorFromString([NSString stringWithFormat: @"set%c%@:", toupper(firstChar), coda]);
@@ -95,7 +95,7 @@ static NSString *propertyNameForAccessor(Class cls, SEL selector) {
             SEL accessor = sel_getUid(accessorName);
             if (sel_isEqual(selector, accessor))
             {
-                propertyName = [NSString stringWithUTF8String: property_getName(property)];
+                propertyName = @(property_getName(property));
                 break; // from for-loop
             }
             
@@ -143,12 +143,10 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 }
 
 - (void)dz_setupBaseQuery {
-	self.baseQuery = [NSDictionary dictionaryWithObjectsAndKeys:
-					  (__bridge id)kSecClassGenericPassword, (__bridge id)kSecClass,
-					  [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"], (__bridge id)kSecAttrCreator,
-					  self.identifier, (__bridge id)kSecAttrAccount,
-					  self.serviceName, (__bridge id)kSecAttrService,
-					  nil];
+	self.baseQuery = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+					  (__bridge id)kSecAttrCreator: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
+					  (__bridge id)kSecAttrAccount: self.identifier,
+					  (__bridge id)kSecAttrService: self.serviceName};
 }
 
 #pragma mark Initializers
@@ -182,13 +180,11 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
 		NSMutableDictionary *authStore = [[defaults dictionaryForKey: DZAuthenticationStoreUserDefaultsKey] mutableCopy] ?: [NSMutableDictionary dictionary];
-		NSMutableArray *serviceStore = [[authStore objectForKey: serviceName] mutableCopy] ?: [NSMutableArray array];
+		NSMutableArray *serviceStore = [authStore[serviceName] mutableCopy] ?: [NSMutableArray array];
 
 		if (![serviceStore containsObject: self.identifier]) {
-			  [serviceStore addObject: self.identifier];
-
-			[authStore setObject: serviceStore forKey: serviceName];
-
+			[serviceStore addObject: self.identifier];
+			authStore[serviceName] = serviceStore;
 			[defaults setObject: authStore forKey: DZAuthenticationStoreUserDefaultsKey];
 			[defaults synchronize];
 		}
@@ -332,12 +328,12 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 	
 	if ([contentsKeys containsObject: key]) {
 		if (contentsKeys.count > 1) {
-			return [(NSDictionary *)self.contents objectForKey: key];
+			return ((NSDictionary *)self.contents)[key];
 		} else {
 			return self.contents;
 		}
 	} else if ([userInfoKeys containsObject: key]) {
-		return [self.userInfo objectForKey: key];
+		return (self.userInfo)[key];
 	} else {
 		return [super valueForUndefinedKey: key];
 	}
@@ -352,14 +348,14 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 	if (isMutable && [contentsKeys containsObject: key]) {
 		if (contentsKeys.count > 1) {
 			NSMutableDictionary *userInfo = [(NSDictionary *)self.contents mutableCopy] ?: [NSMutableDictionary dictionary];
-			[userInfo setObject: value forKey: key];
+			userInfo[key] = value;
 			self.contents = userInfo;
 		} else {
 			self.contents = value;
 		}
 	} else if (isMutable && [userInfoKeys containsObject: key]) {
 		NSMutableDictionary *userInfo = [self.userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
-		[userInfo setObject: value forKey: key];
+		userInfo[key] = value;
 		self.userInfo = userInfo;
 	} else {
 		[super setValue: value forUndefinedKey: key];
@@ -413,10 +409,10 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
         return nil;
 	
 	NSDictionary *match = (__bridge_transfer NSDictionary *)attributes;
-	NSData *userInfoData = [match objectForKey:(__bridge id)kSecAttrGeneric];
+	NSData *userInfoData = match[(__bridge id)kSecAttrGeneric];
 	
 	NSMutableDictionary *userInfo = [[NSJSONSerialization JSONObjectWithData: userInfoData options: 0 error: NULL] mutableCopy];
-	NSString *username = [userInfo objectForKey: @"username"];
+	NSString *username = userInfo[@"username"];
 	[userInfo removeObjectForKey: @"username"];
 	
 	return [self dz_storeForServiceName: serviceName identifier: unique username: username userInfo: userInfo];

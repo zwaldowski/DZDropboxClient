@@ -12,7 +12,7 @@
 	NSDictionary *_original;
 }
 
-+ (NSDateFormatter*)dateFormatter {
+- (NSDateFormatter*)dateFormatter {
 	static dispatch_once_t onceToken;
 	static NSDateFormatter *dateFormatter = nil;
 	dispatch_once(&onceToken, ^{
@@ -25,18 +25,18 @@
 
 - (id)initWithDictionary:(NSDictionary*)dict {
     if ((self = [super init])) {
-        _thumbnailExists = [[dict objectForKey:@"thumb_exists"] boolValue];
-        _totalBytes = [[dict objectForKey:@"bytes"] longLongValue];
+        _thumbnailExists = [dict[@"thumb_exists"] boolValue];
+        _totalBytes = [dict[@"bytes"] longLongValue];
 
-        if ([dict objectForKey:@"modified"])
-            _lastModifiedDate = [[[self class] dateFormatter] dateFromString:[dict objectForKey:@"modified"]];
+        if (dict[@"modified"])
+            _lastModifiedDate = [self.dateFormatter dateFromString: dict[@"modified"]];
 		
-		if ([dict objectForKey:@"client_mtime"])
-            _clientMTime = [[[self class] dateFormatter] dateFromString:[dict objectForKey:@"client_mtime"]];
+		if (dict[@"client_mtime"])
+            _clientMTime = [self.dateFormatter dateFromString: dict[@"client_mtime"]];
 
-        _path = [dict objectForKey:@"path"];
-		_filename = [_path lastPathComponent];
-        _isDirectory = [[dict objectForKey:@"is_dir"] boolValue];
+        _path = dict[@"path"];
+		_filename = _path.lastPathComponent;
+        _isDirectory = [dict[@"is_dir"] boolValue];
 
 		NSArray *contentsDictionaries = dict[@"contents"];
         if (contentsDictionaries.count) {
@@ -47,13 +47,13 @@
 			_contents = [contents copy];
 		}
         
-        _hash = [dict objectForKey:@"hash"];
-        _humanReadableSize = [dict objectForKey:@"size"];
-        _root = [dict objectForKey:@"root"];
-        _icon = [dict objectForKey:@"icon"];
-        _rev = [dict objectForKey:@"rev"];
-        _revision = [[dict objectForKey:@"revision"] longLongValue];
-        _isDeleted = [[dict objectForKey:@"is_deleted"] boolValue];
+        _hash = dict[@"hash"];
+        _humanReadableSize = dict[@"size"];
+        _root = dict[@"root"];
+        _icon = dict[@"icon"];
+        _rev = dict[@"rev"];
+        _revision = [dict[@"revision"] longLongValue];
+        _isDeleted = [dict[@"is_deleted"] boolValue];
 		
 		_original = dict;
     }
@@ -72,12 +72,12 @@
 
 #pragma mark NSCoding methods
 
-- (id)initWithCoder:(NSCoder*)coder {
-	return [self initWithDictionary:[coder decodeObject]];
+- (id)initWithCoder:(NSCoder *)coder {
+	return [self initWithDictionary: [coder decodeObject]];
 }
 
-- (void)encodeWithCoder:(NSCoder*)coder {
-    [coder encodeObject:_original];
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject: _original];
 }
 
 @end

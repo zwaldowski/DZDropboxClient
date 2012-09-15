@@ -14,11 +14,11 @@
 
 - (id)initWithDictionary:(NSDictionary*)dict {
     if ((self = [super init])) {
-        _country = [dict objectForKey:@"country"];
-        _displayName = [dict objectForKey:@"display_name"];
-		_quota = [dict objectForKey:@"quota_info"];
-        _userID = [[dict objectForKey:@"uid"] stringValue];
-        _referralLink = [dict objectForKey:@"referral_link"];
+        _country = dict[@"country"];
+        _displayName = dict[@"display_name"];
+		_quota = dict[@"quota_info"];
+        _userID = [dict[@"uid"] stringValue];
+        _referralLink = dict[@"referral_link"];
 		_original = dict;
     }
     return self;
@@ -37,15 +37,15 @@
 #pragma mark Quota methods
 
 - (long long)normalConsumedBytes {
-	return [[self.quota objectForKey:@"normal"] longLongValue];
+	return [(self.quota)[@"normal"] longLongValue];
 }
 
 - (long long)sharedConsumedBytes {
-	return [[self.quota objectForKey:@"shared"] longLongValue];
+	return [(self.quota)[@"shared"] longLongValue];
 }
 
 - (long long)totalBytes {
-	return [[self.quota objectForKey:@"quota"] longLongValue];
+	return [(self.quota)[@"quota"] longLongValue];
 }
 
 - (long long)totalConsumedBytes {

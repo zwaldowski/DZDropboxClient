@@ -56,7 +56,7 @@ static DZDropboxClient *outgoingClient = nil;
 		return NO;
 
 	NSArray *components = URL.path.pathComponents;
-	NSString *methodName = components.count > 1 ? [components objectAtIndex:1] : nil;
+	NSString *methodName = components.count > 1 ? components[1] : nil;
 	
 	if ([methodName isEqual:@"cancelled"])
 		block();
@@ -66,7 +66,7 @@ static DZDropboxClient *outgoingClient = nil;
 		return NO;
 	
 	NSDictionary *params = DZParametersFromURLQuery(URL);
-	NSString *userID = [params objectForKey:@"uid"];
+	NSString *userID = params[@"uid"];
 	
     [self dz_setCredential: [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: userID]];
     [self dz_setUserID: userID];
@@ -77,11 +77,10 @@ static DZDropboxClient *outgoingClient = nil;
 }
 
 - (void)linkUserID:(NSString *)userID {
-	NSAssert([[self class] consumerKey] && [[self class] consumerSecret], @"Please set a consumer key and secret!");
     NSString *appScheme = [NSString stringWithFormat:@"db-%@", [[self class] consumerKey]];
-    NSArray *urlTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
+    NSArray *urlTypes = [[NSBundle mainBundle] infoDictionary][@"CFBundleURLTypes"];
 	BOOL conformsToScheme = ([urlTypes indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		NSArray *schemes = [obj objectForKey:@"CFBundleURLSchemes"];
+		NSArray *schemes = obj[@"CFBundleURLSchemes"];
 		return ([schemes indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 			if ([obj isEqualToString: appScheme]) {
 				*stop = YES;
