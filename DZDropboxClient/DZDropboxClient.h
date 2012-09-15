@@ -28,7 +28,7 @@ typedef enum {
 } DZDropboxClientRoot;
 
 @interface DZDropboxClient : DZOAuth1Client <NSCoding> {
-	@package
+@package
 	BOOL _dz_isAuthenticating;
 }
 
@@ -54,16 +54,11 @@ typedef enum {
 
 - (void)loadDelta:(NSString *)sinceCursor success:(void(^)(NSArray *entries, BOOL shouldReset, NSString *cursor, BOOL hasMore))success failure:(DBErrorBlock)failure;
 
-- (void)downloadFile:(NSString *)path toPath:(NSString *)destinationPath success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
-- (void)downloadFile:(NSString *)path revision:(NSString *)rev toPath:(NSString *)destPath success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
-
 - (void)downloadFile:(NSString *)path toURL:(NSURL *)destinationURL success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
 - (void)downloadFile:(NSString *)path revision:(NSString *)rev toURL:(NSURL *)destinationURL success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
 
-- (void)downloadThumbnail:(NSString *)forPath size:(DZDropboxThumbnailSize)size toPath:(NSString *)destinationPath success:(DBResultBlock)success failure:(DBErrorBlock)failure;
 - (void)downloadThumbnail:(NSString *)forPath size:(DZDropboxThumbnailSize)size toURL:(NSURL *)destinationURL success:(DBResultBlock)success failure:(DBErrorBlock)failure;
 
-- (void)uploadFileAtPath:(NSString *)filename toPath:(NSString *)remoteName overwrite:(BOOL)shouldOverwrite success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
 - (void)uploadFileAtURL:(NSURL *)filename toPath:(NSString *)remoteName overwrite:(BOOL)shouldOverwrite success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure;
 
 - (void)loadRevisions:(NSString *)path success:(DBResultsBlock)success failure:(DBErrorBlock)failure;

@@ -223,116 +223,130 @@ NSDictionary * DZParametersFromURLQuery(NSURL *URL) {
     [self enqueueHTTPRequestOperation:operation];
 }
 
-- (void)downloadFile:(NSString *)path toPath:(NSString *)destinationPath success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure {
-	[self downloadFile:path revision:nil toPath:destinationPath success:success progress:progress failure:failure];
-}
-
-- (void)downloadFile:(NSString *)path revision:(NSString *)rev toPath:(NSString *)destPath success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure {
-	NSParameterAssert(destPath.length);
-	
-	NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:destPath append:NO];
-	[self downloadFile:path revision:rev outputStream:stream success:success progress:progress failure:failure];
-}
-
 - (void)downloadFile:(NSString *)path toURL:(NSURL *)destinationURL success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure {
 	[self downloadFile:path revision:nil toURL:destinationURL success:success progress:progress failure:failure];
 }
 
 - (void)downloadFile:(NSString *)path revision:(NSString *)rev toURL:(NSURL *)destinationURL success:(DBResultBlock)success progress:(void(^)(CGFloat))progress failure:(DBErrorBlock)failure {
-	NSParameterAssert(destinationURL);
-	
-	NSOutputStream *stream = [NSOutputStream outputStreamWithURL:destinationURL append:NO];
-	[self downloadFile:path revision:rev outputStream:stream success:success progress:progress failure:failure];
-}
-
-- (void)downloadThumbnail:(NSString *)path size:(DZDropboxThumbnailSize)size outputStream:(NSOutputStream *)stream success:(DBResultBlock)success failure:(DBErrorBlock)failure {
 	NSParameterAssert(path.length);
-	
-	NSString *fullPath = [NSString stringWithFormat:@"thumbnails/%@%@", [[self class] dz_root], path];
-	NSString *format = (path.length > 4 && ([path hasSuffix:@"PNG"] || [path hasSuffix:@"png"] || [path hasSuffix:@"GIF"] || [path hasSuffix:@"gif"])) ? @"PNG" : @"JPEG";
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-							format, @"format",
-							NSStringFromThumbnailSize(size), @"size",
-							nil];
+	NSParameterAssert(destinationURL);
+
+	NSString* fullPath = [NSString stringWithFormat:@"files/%@%@", [[self class] dz_root], path];
+	NSDictionary *params = rev ? [NSDictionary dictionaryWithObject:rev forKey:@"rev"] : nil;
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path:fullPath parameters:params];
 	
-	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (!success)
-			return;
-		
-		NSData *metadataObj = [[operation.response.allHeaderFields objectForKey:@"X-Dropbox-Metadata"] dataUsingEncoding:NSUTF8StringEncoding];
-		NSDictionary *metadataDict = [NSJSONSerialization JSONObjectWithData:metadataObj options:0 error:NULL];
-		success([[DZDropboxMetadata alloc] initWithDictionary: metadataDict]);
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		if (success) {
+			NSData *metadataObj = [operation.response.allHeaderFields[@"X-Dropbox-Metadata"] dataUsingEncoding: NSUTF8StringEncoding];
+			NSDictionary *metadataDict = [NSJSONSerialization JSONObjectWithData:metadataObj options:0 error:NULL];
+			success([[DZDropboxMetadata alloc] initWithDictionary: metadataDict]);
+		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (failure)
 			failure(error);
 	}];
-	operation.outputStream = stream;
-    [self enqueueHTTPRequestOperation:operation];
-}
-
-- (void)downloadThumbnail:(NSString *)path size:(DZDropboxThumbnailSize)size toPath:(NSString *)destinationPath success:(DBResultBlock)success failure:(DBErrorBlock)failure {
-	NSParameterAssert(destinationPath.length);
+	if (progress) {
+		[operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+			progress((CGFloat)totalBytesRead/totalBytesExpectedToRead);
+		}];
+	}
+	operation.outputStream = [NSOutputStream outputStreamWithURL:destinationURL append:NO];
 	
-	NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:destinationPath append:NO];
-	[self downloadThumbnail:path size:size outputStream:stream success:success failure:failure];
+    [self enqueueHTTPRequestOperation: operation];
 }
 
 - (void)downloadThumbnail:(NSString *)path size:(DZDropboxThumbnailSize)size toURL:(NSURL *)destinationURL success:(DBResultBlock)success failure:(DBErrorBlock)failure {
+	NSParameterAssert(path.length);
 	NSParameterAssert(destinationURL);
-	
-	NSOutputStream *stream = [NSOutputStream outputStreamWithURL:destinationURL append:NO];
-	[self downloadThumbnail:path size:size outputStream:stream success:success failure:failure];
-}
 
-- (void)uploadFileAtPath:(NSString *)filename toPath:(NSString *)remoteName overwrite:(BOOL)shouldOverwrite success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure {
-	NSParameterAssert(filename.length);
-	NSParameterAssert(remoteName.length);
-	
-	BOOL isDir = NO;
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filename isDirectory:&isDir];
-    NSDictionary *fileAttrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filename error:nil];
-	
-    if (!fileExists || isDir || !fileAttrs) {
-		if (failure) {
-			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									  filename, @"sourcePath",
-									  remoteName, @"destinationPath", nil];
-			NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:isDir ? NSFileReadInvalidFileNameError : NSFileReadNoSuchFileError userInfo:userInfo];
-			failure(error);
-		}
-        return;
-    }
-	
-	NSString *fullPath = [NSString stringWithFormat:@"files_put/%@%@", [[self class] dz_root], remoteName];
-	NSDictionary *params = [NSDictionary dictionaryWithObject:shouldOverwrite ? @"true" : @"false" forKey:@"overwrite"];
-	NSMutableURLRequest *request = [self contentRequestWithMethod:@"PUT" path:fullPath parameters:params];
-	NSString* contentLength = [NSString stringWithFormat: @"%qu", [fileAttrs fileSize]];
-    [request addValue:contentLength forHTTPHeaderField: @"Content-Length"];
-    [request addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
+	NSString *fullPath = [NSString stringWithFormat:@"thumbnails/%@%@", [[self class] dz_root], path];
+	NSString *format = ([path.lowercaseString hasSuffix: @"png"] || [path.lowercaseString hasSuffix: @"gif"]) ? @"PNG" : @"JPEG";
+	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path: fullPath parameters: @{
+							 @"format" : format,
+							 @"size" : NSStringFromThumbnailSize(size)
+							 }];
+
 	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (!success)
-			return;
-		
-        success([[DZDropboxMetadata alloc] initWithDictionary: responseObject]);
+		if (success) {
+			NSData *metadataObj = [operation.response.allHeaderFields[@"X-Dropbox-Metadata"] dataUsingEncoding: NSUTF8StringEncoding];
+			NSDictionary *metadataDict = [NSJSONSerialization JSONObjectWithData:metadataObj options:0 error:NULL];
+			success([[DZDropboxMetadata alloc] initWithDictionary: metadataDict]);
+		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		if (failure)
 			failure(error);
 	}];
-	operation.inputStream = [NSInputStream inputStreamWithFileAtPath:filename];
-	if (progress) {
-		[operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-			progress((CGFloat)totalBytesWritten/totalBytesExpectedToWrite);
-		}];
-	}
-	[self enqueueHTTPRequestOperation:operation];
+	operation.outputStream = [NSOutputStream outputStreamWithURL:destinationURL append:NO];
+
+    [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)uploadFileAtURL:(NSURL *)filename toPath:(NSString *)remoteName overwrite:(BOOL)shouldOverwrite success:(DBResultBlock)success progress:(DBProgressBlock)progress failure:(DBErrorBlock)failure {
 	NSParameterAssert(filename);
 	NSParameterAssert(remoteName.length);
+
+	NSError *error = nil;
+
+	unsigned long long size = ULLONG_MAX;
+	BOOL fileExists = YES;
+	BOOL isDir = NO;
+
+    NSNumber *fileSize = nil;
+	BOOL result = [filename getResourceValue: &fileSize forKey: NSURLFileSizeKey error: &error];
+	if (!result && !error) { // Below iOS 5
+		NSDictionary *attr = [[NSFileManager defaultManager] attributesOfItemAtPath: filename.path error: &error];
+		if (!attr.count || error) {
+			size = 0;
+			fileExists = NO;
+		} else {
+			size = [attr[NSFileSize] unsignedLongLongValue];
+			isDir = [attr[NSFileType] isEqualToString: NSFileTypeDirectory];
+		}
+	} else if (error) { // iOS 5+, but failure
+		fileExists = NO;
+		size = 0;
+	} else { // iOS 5
+		size = [fileSize unsignedLongLongValue];
+
+		NSNumber *isDirValue = nil;
+		[filename getResourceValue: &isDirValue forKey: NSURLIsDirectoryKey error: &error];
+		isDir = [isDirValue boolValue];
+	}
+
 	
-	[self uploadFileAtPath:[filename path] toPath:remoteName overwrite:shouldOverwrite success:success progress:progress failure:failure];
+    if (!fileExists || isDir) {
+		if (failure) {
+			if (!error) {
+				error = [NSError errorWithDomain: NSCocoaErrorDomain code: isDir ? NSFileReadInvalidFileNameError : NSFileReadNoSuchFileError userInfo: @{
+							 NSFilePathErrorKey : filename.path
+						 }];
+			}
+			failure(error);
+		}
+        return;
+    }
+
+	NSString *fullPath = [NSString stringWithFormat :@"files_put/%@%@", [[self class] dz_root], remoteName];
+	NSDictionary *params = [NSDictionary dictionaryWithObject: shouldOverwrite ? @"true" : @"false" forKey:@"overwrite"];
+	NSMutableURLRequest *request = [self contentRequestWithMethod: @"PUT" path: fullPath parameters: params];
+    [request addValue: [NSString stringWithFormat: @"%qu", size] forHTTPHeaderField: @"Content-Length"];
+    [request addValue: @"application/octet-stream" forHTTPHeaderField: @"Content-Type"];
+	
+	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		if (success)
+			success([[DZDropboxMetadata alloc] initWithDictionary: responseObject]);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (failure)
+			failure(error);
+	}];
+
+	operation.inputStream = [NSInputStream inputStreamWithURL: filename];
+	if (progress)
+		[operation setUploadProgressBlock:^(NSUInteger written, long long totalWritten, long long totalExpected) {
+			progress((CGFloat)totalWritten/totalExpected);
+		}];
+	
+	[self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)loadRevisions:(NSString *)path success:(DBResultsBlock)success failure:(DBErrorBlock)failure {
