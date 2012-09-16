@@ -22,24 +22,22 @@ typedef NS_ENUM(NSUInteger, DZDropboxThumbnailSize) {
 	DZDropboxThumbnailSizeLarge
 };
 
-typedef NS_ENUM(NSUInteger, DZDropboxClientRoot) {
-	DZDropboxClientRootDropbox,
-	DZDropboxClientRootAppFolder
-};
+extern NSString *const DZDropboxClientRootDropbox;
+extern NSString *const DZDropboxClientRootAppFolder;
 
 @interface DZDropboxClient : DZOAuth1Client <NSCoding> {
-@package
-	BOOL _dz_isAuthenticating;
+@private
+	BOOL _isAuthenticating;
 }
 
-+ (DZDropboxClientRoot)clientRoot; 
++ (NSString *)clientRoot;
 
 - (id)initWithUserID:(NSString *)userID;
 
 + (NSArray *)linkedUserIDs;
 + (void)unlinkAll;
 
-@property (nonatomic, readonly) NSString *userID;
+@property (nonatomic, copy) NSString *userID;
 @property (nonatomic, readonly, getter = isLinked) BOOL linked;
 
 @property (nonatomic, copy) void(^authenticationFailureBlock)(NSString *userID);

@@ -101,7 +101,7 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 
 @implementation DZOAuth1Client
 
-- (void)dz_baseSetup {
+- (void)sharedInit {
 	if (!self.OAuthValues)
 		self.OAuthValues = [NSMutableDictionary dictionary];
 
@@ -113,14 +113,14 @@ static NSString *DZOAuthSignature(NSString *base, DZOAuthSignatureMethod method,
 - (id)initWithBaseURL:(NSURL *)URL credential:(DZOAuth1Credential *)credential {
     if ((self = [super initWithBaseURL: URL])) {
         self.credential = credential;
-		[self dz_baseSetup];
+		[self sharedInit];
     }
     return self;
 }
 
 - (id)initWithBaseURL:(NSURL *)url {
 	if ((self = [super initWithBaseURL:url])) {
-		[self dz_baseSetup];
+		[self sharedInit];
 	}
 	return self;
 }

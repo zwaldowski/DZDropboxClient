@@ -18,15 +18,29 @@ extern NSString *DZDropboxAPIVersion;
 extern NSString *DZDropboxProtocol;
 extern NSString *DZDropboxWebHost;
 
-extern NSDictionary * DZParametersFromURLQuery(NSURL *URL);
+static NSDictionary *DZDictionaryForURLQuery(NSURL *URL) {
+	if (!URL.query.length)
+		return nil;
 
-@interface DZDropboxClient ()
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+	NSScanner *parameterScanner = [[NSScanner alloc] initWithString: URL.query];
 
-- (void)dz_resetCredential;
-- (void)dz_setUserID:(NSString *)userID;
-- (void)dz_setCredential:(DZOAuth1Credential *)credential;
+	while (![parameterScanner isAtEnd]) {
+		NSString *key = nil;
+		[parameterScanner scanUpToString:@"=" intoString:&key];
+		[parameterScanner scanString:@"=" intoString:NULL];
 
-@end
+		NSString *value = nil;
+		[parameterScanner scanUpToString:@"&" intoString:&value];
+		[parameterScanner scanString:@"&" intoString:NULL];
+
+		if (!key.length && !value.length)
+			continue;
+
+		parameters[[key stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] = [value stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	}
+    return parameters;
+}
 
 static DZDropboxClient *outgoingClient = nil;
 
@@ -65,11 +79,9 @@ static DZDropboxClient *outgoingClient = nil;
 	if (![methodName isEqual:@"connect"])
 		return NO;
 	
-	NSDictionary *params = DZParametersFromURLQuery(URL);
-	NSString *userID = params[@"uid"];
-	
-    [self dz_setCredential: [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: userID]];
-    [self dz_setUserID: userID];
+	NSDictionary *params = DZDictionaryForURLQuery(URL);
+	self.credential = [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: params[@"uid"]];
+    self.userID = params[@"uid"];
 }
 
 - (NSURL *)URLToLink {
@@ -117,7 +129,8 @@ static DZDropboxClient *outgoingClient = nil;
 }
 
 - (void)unlink {
-    [self dz_resetCredential];
+	[self.credential evict];
+	self.userID = nil;
 }
 
 @end

@@ -135,14 +135,7 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 
 #pragma mark Private
 
-+ (id)dz_storeForServiceName:(NSString *)name identifier:(NSString *)identifier username:(NSString *)username userInfo:(NSDictionary *)userInfo {
-	DZAuthenticationStore *ret = [[[self class] alloc] initWithServiceName: name identifier: identifier];
-	ret->_username = [username copy];
-	ret->_userInfo = [userInfo copy];
-	return ret;
-}
-
-- (void)dz_setupBaseQuery {
+- (void)sharedInit {
 	self.baseQuery = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 					  (__bridge id)kSecAttrCreator: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
 					  (__bridge id)kSecAttrAccount: self.identifier,
@@ -175,7 +168,7 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 		self.serviceName = serviceName.length ? serviceName : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
 		self.identifier = identifier;
 
-		[self dz_setupBaseQuery];
+		[self sharedInit];
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -195,7 +188,10 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 #pragma mark NS<Mutable>Copying
 
 - (id)copyWithZone:(NSZone *)zone {
-	return [DZAuthenticationStore dz_storeForServiceName: self.serviceName identifier: self.identifier username: self.username userInfo: self.userInfo];
+	DZAuthenticationStore *ret = [[[self class] alloc] initWithServiceName: self.serviceName identifier: self.identifier];
+	ret->_username = [self.username copy];
+	ret->_userInfo = [self.userInfo copy];
+	return ret;
 }
 
 - (id)mutableCopyWithZone:(NSZone *)zone {
@@ -214,7 +210,7 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 		_username = [[aDecoder decodeObjectForKey: @"username"] copy];
 		_userInfo = [aDecoder decodeObjectForKey: @"userInfo"];
 		_identifier = [aDecoder decodeObjectForKey: @"identifier"];
-		[self dz_setupBaseQuery];
+		[self sharedInit];
 	}
 	return self;
 }
@@ -223,7 +219,7 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 	[aCoder encodeObject: self.serviceName forKey: @"serviceName"];
 	[aCoder encodeObject: self.username forKey: @"username"];
 	[aCoder encodeObject: self.userInfo forKey: @"userInfo"];
-    [aCoder encodeObject: self.identifier forKey: @"identifier"];
+	[aCoder encodeObject: self.identifier forKey: @"identifier"];
 }
 
 #pragma mark Properties
@@ -414,8 +410,11 @@ static void setValueImplementation(NSObject *self, SEL _cmd, id value) {
 	NSMutableDictionary *userInfo = [[NSJSONSerialization JSONObjectWithData: userInfoData options: 0 error: NULL] mutableCopy];
 	NSString *username = userInfo[@"username"];
 	[userInfo removeObjectForKey: @"username"];
-	
-	return [self dz_storeForServiceName: serviceName identifier: unique username: username userInfo: userInfo];
+
+	DZAuthenticationStore *ret = [[self alloc] initWithServiceName: serviceName identifier: unique];
+	ret->_username = [username copy];
+	ret->_userInfo = [userInfo copy];
+	return ret;
 }
 
 + (instancetype)findStoreForServiceName:(NSString *)serviceName username:(NSString *)username {

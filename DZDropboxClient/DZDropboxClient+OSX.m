@@ -37,16 +37,6 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 
 #pragma mark -
 
-@interface DZDropboxClient ()
-
-- (void)dz_resetCredential;
-- (void)dz_setUserID:(NSString *)userID;
-- (void)dz_setCredential:(DZOAuth1Credential *)credential;
-
-@end
-
-#pragma mark -
-
 @implementation DZDropboxClient (OSX)
 
 - (void)dealloc {
@@ -54,7 +44,8 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 }
 
 - (void)unlink {
-    [self dz_resetCredential];
+	[self.credential evict];
+	self.userID = nil;
 	[[NSNotificationCenter defaultCenter] postNotificationName:DZDropboxClientAuthenticationChangedNotification object:self];
 }
 
@@ -93,10 +84,10 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 				DZDropboxParseResponseString(operation.responseString, &token, &secret, &uid);
                 
                 NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: token, @"oauth_token", secret, @"oauth_token_secret", nil];
-                [self dz_setCredential: [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: uid]];
-                [self dz_setUserID: uid];
-
+				self.credential = [DZOAuth1Credential storeForServiceName: @"Dropbox" responseObject: params username: uid];
+				self.userID = uid;
 				self.authenticating = NO;
+				
 				[[NSNotificationCenter defaultCenter] removeObserver:self];
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				if (operation.response.statusCode == 403) {
@@ -125,11 +116,11 @@ static void DZDropboxParseResponseString(NSString *result, NSString **pToken, NS
 #pragma mark Properties
 
 - (BOOL)isAuthenticating {
-	return _dz_isAuthenticating;
+	return _isAuthenticating;
 }
 
 - (void)setAuthenticating:(BOOL)authenticating {
-	_dz_isAuthenticating = authenticating;
+	_isAuthenticating = authenticating;
 	[[NSNotificationCenter defaultCenter] postNotificationName:DZDropboxClientAuthenticationChangedNotification object:self];
 }
 
