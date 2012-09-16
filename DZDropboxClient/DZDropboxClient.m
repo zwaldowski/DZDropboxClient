@@ -152,7 +152,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 	
-	NSString* fullPath = [NSString stringWithFormat:@"metadata/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"metadata/%@/%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		success(operation.response.statusCode == 304 ? nil : [DZDropboxMetadata metadataWithDictionary:responseObject]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -202,7 +202,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 
-	NSString* fullPath = [NSString stringWithFormat:@"files/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"files/%@/%@", [[self class] dz_root], path];
 	NSDictionary *params = rev ? @{@"rev": rev} : nil;
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path:fullPath parameters:params];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -230,7 +230,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(destinationURL);
 
-	NSString* fullPath = [NSString stringWithFormat:@"files/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"files/%@/%@", [[self class] dz_root], path];
 	NSDictionary *params = rev ? @{@"rev": rev} : nil;
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path:fullPath parameters:params];
 	
@@ -258,7 +258,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(destinationURL);
 
-	NSString *fullPath = [NSString stringWithFormat:@"thumbnails/%@%@", [[self class] dz_root], path];
+	NSString *fullPath = [NSString stringWithFormat:@"thumbnails/%@/%@", [[self class] dz_root], path];
 	NSString *format = ([path.lowercaseString hasSuffix: @"png"] || [path.lowercaseString hasSuffix: @"gif"]) ? @"PNG" : @"JPEG";
 	NSURLRequest *request = [self contentRequestWithMethod:@"GET" path: fullPath parameters: @{
 							 @"format" : format,
@@ -325,7 +325,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
         return;
     }
 
-	NSString *fullPath = [NSString stringWithFormat :@"files_put/%@%@", [[self class] dz_root], remoteName];
+	NSString *fullPath = [NSString stringWithFormat :@"files_put/%@/%@", [[self class] dz_root], remoteName];
 	NSDictionary *params = @{@"overwrite": shouldOverwrite ? @"true" : @"false"};
 	NSMutableURLRequest *request = [self contentRequestWithMethod: @"PUT" path: fullPath parameters: params];
     [request addValue: [NSString stringWithFormat: @"%qu", size] forHTTPHeaderField: @"Content-Length"];
@@ -356,7 +356,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 	
-	NSString *fullPath = [NSString stringWithFormat:@"revisions/%@%@", [[self class] dz_root], path];
+	NSString *fullPath = [NSString stringWithFormat:@"revisions/%@/%@", [[self class] dz_root], path];
 	NSString *limitStr = [NSString stringWithFormat:@"%d", limit];
     NSDictionary *params = @{@"rev_limit": limitStr};
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
@@ -378,7 +378,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 - (void)restoreFile:(NSString *)path toRevision:(NSString *)revision success:(DBResultBlock)success failure:(DBErrorBlock)failure {
 	NSParameterAssert(path.length);
     
-	NSString *fullPath = [NSString stringWithFormat:@"restore/%@%@", [[self class] dz_root], path];
+	NSString *fullPath = [NSString stringWithFormat:@"restore/%@/%@", [[self class] dz_root], path];
     NSDictionary *params = @{@"rev": revision};
 	[self postPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (success)
@@ -394,7 +394,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(success);
 
 	NSDictionary* params = @{@"query": keyword};
-	NSString* fullPath = [NSString stringWithFormat:@"search/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"search/%@/%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
 		if ([responseObject isKindOfClass:[NSDictionary class]])
 			responseObject = @[responseObject];
@@ -476,7 +476,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(success);
 	
 	NSDictionary *params = @{@"path": path};
-    NSString *fullPath = [NSString stringWithFormat:@"copy_ref/%@%@", [[self class] dz_root], path];
+    NSString *fullPath = [NSString stringWithFormat:@"copy_ref/%@/%@", [[self class] dz_root], path];
 	[self postPath:fullPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		success(responseObject[@"copy_ref"]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -505,7 +505,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 
-	NSString* fullPath = [NSString stringWithFormat:@"shares/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"shares/%@/%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		success(responseObject[@"url"]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -518,7 +518,7 @@ NSDictionary *DZParametersFromURLQuery(NSURL *URL) {
 	NSParameterAssert(path.length);
 	NSParameterAssert(success);
 
-	NSString* fullPath = [NSString stringWithFormat:@"media/%@%@", [[self class] dz_root], path];
+	NSString* fullPath = [NSString stringWithFormat:@"media/%@/%@", [[self class] dz_root], path];
 	[self getPath:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		success([NSURL URLWithString:responseObject[@"url"]]);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
